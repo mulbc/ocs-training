@@ -1,0 +1,1197 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Deploying OpenShift Container Storage using Local Devices :: OCS Training</title>
+    <link rel="canonical" href="https://mulbc.github.io/ocs-training/install&configure/ocp4ocs4/local-storage.html">
+    <meta name="generator" content="Antora 2.3.3">
+    <link rel="stylesheet" href="../../_/css/site.css">
+  </head>
+  <body class="article">
+<header class="header">
+  <nav class="navbar">
+    <div class="navbar-brand">
+      <a class="navbar-item" href="https://mulbc.github.io/ocs-training">OCS Training</a>
+      <button class="navbar-burger" data-target="topbar-nav">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+    </div>
+    <div id="topbar-nav" class="navbar-menu">
+      <div class="navbar-end">
+        <a class="navbar-item" href="#">Home</a>
+        <div class="navbar-item has-dropdown is-hoverable">
+          <a class="navbar-link" href="#">Products</a>
+          <div class="navbar-dropdown">
+            <a class="navbar-item" href="#">Product A</a>
+            <a class="navbar-item" href="#">Product B</a>
+            <a class="navbar-item" href="#">Product C</a>
+          </div>
+        </div>
+        <div class="navbar-item has-dropdown is-hoverable">
+          <a class="navbar-link" href="#">Services</a>
+          <div class="navbar-dropdown">
+            <a class="navbar-item" href="#">Service A</a>
+            <a class="navbar-item" href="#">Service B</a>
+            <a class="navbar-item" href="#">Service C</a>
+          </div>
+        </div>
+        <div class="navbar-item has-dropdown is-hoverable">
+          <a class="navbar-link" href="#">Resources</a>
+          <div class="navbar-dropdown">
+            <a class="navbar-item" href="#">Resource A</a>
+            <a class="navbar-item" href="#">Resource B</a>
+            <a class="navbar-item" href="#">Resource C</a>
+          </div>
+        </div>
+        <div class="navbar-item">
+          <span class="control">
+            <a class="button is-primary" href="#">Download</a>
+          </span>
+        </div>
+      </div>
+    </div>
+  </nav>
+</header>
+<div class="body">
+<div class="nav-container" data-component="install&amp;configure" data-version="master">
+  <aside class="nav">
+    <div class="panels">
+<div class="nav-panel-menu is-active" data-panel="menu">
+  <nav class="nav-menu">
+    <h3 class="title"><a href="../index.html">OCS Installation and Configuration</a></h3>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../index.html">Module Overview</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="index.html">Overview</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="ocs.html">OCS 4 Install and Set Up</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="local-storage-byid.html">Local Storage Set Up</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../ocs4perf/ocs4perf.html">OCS Performance benchmarking</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </nav>
+</div>
+<div class="nav-panel-explore" data-panel="explore">
+  <div class="context">
+    <span class="title">OCS Installation and Configuration</span>
+    <span class="version">master</span>
+  </div>
+  <ul class="components">
+    <li class="component">
+      <span class="title">OCS Best Practices</span>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../bestPractice/index.html">master</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component is-current">
+      <span class="title">OCS Installation and Configuration</span>
+      <ul class="versions">
+        <li class="version is-current is-latest">
+          <a href="../index.html">master</a>
+        </li>
+      </ul>
+    </li>
+  </ul>
+</div>
+    </div>
+  </aside>
+</div>
+<main class="article">
+<div class="toolbar" role="navigation">
+<button class="nav-toggle"></button>
+  <a href="../index.html" class="home-link"></a>
+<nav class="breadcrumbs" aria-label="breadcrumbs">
+  <ul>
+    <li><a href="../index.html">OCS Installation and Configuration</a></li>
+    <li><a href="local-storage.html">Deploying OpenShift Container Storage using Local Devices</a></li>
+  </ul>
+</nav>
+  <div class="edit-this-page"><a href="https://github.com/mulbc/ocs-training/edit/master/install&amp;configure/modules/ocp4ocs4/pages/local-storage.adoc">Edit this Page</a></div>
+  </div>
+  <div class="content">
+<article class="doc">
+<h1 class="page">Deploying OpenShift Container Storage using Local Devices</h1>
+<div id="toc" class="toc">
+<div id="toctitle">Table of Contents</div>
+<ul class="sectlevel1">
+<li><a href="#_installing_red_hat_openshift_container_storage_operator_using_the_operator_hub">1. Installing Red Hat OpenShift Container Storage Operator using the Operator Hub</a></li>
+<li><a href="#_installing_openshift_container_storage_on_local_storage_devices">2. Installing OpenShift Container Storage on Local Storage Devices</a>
+<ul class="sectlevel2">
+<li><a href="#_prerequisites">2.1. Prerequisites</a></li>
+<li><a href="#_installing_the_local_storage_operator">2.2. Installing the Local Storage Operator</a></li>
+<li><a href="#_finding_available_storage_devices">2.3. Finding Available Storage Devices</a></li>
+<li><a href="#_using_the_lso_localvolume_custom_resource_to_create_pvs">2.4. Using the LSO LocalVolume Custom Resource to Create PVs</a></li>
+<li><a href="#_creating_the_ocs_storage_cluster_on_aws">2.5. Creating the OCS Storage Cluster on AWS</a>
+<ul class="sectlevel3">
+<li><a href="#_validating_the_successful_ocs_storage_cluster_creation_on_aws">2.5.1. Validating the successful OCS Storage Cluster creation on AWS</a></li>
+</ul>
+</li>
+<li><a href="#_creating_the_ocs_storage_cluster_on_vmware">2.6. Creating the OCS Storage Cluster on VMware</a></li>
+<li><a href="#_creating_the_ocs_storage_cluster_on_bare_metal">2.7. Creating the OCS Storage Cluster on Bare Metal</a></li>
+</ul>
+</li>
+<li><a href="#_using_the_rook_ceph_toolbox_to_validate_ceph_backing_storage">3. Using the Rook-Ceph toolbox to Validate Ceph backing storage</a></li>
+</ul>
+</div>
+<div class="sect1">
+<h2 id="_installing_red_hat_openshift_container_storage_operator_using_the_operator_hub"><a class="anchor" href="#_installing_red_hat_openshift_container_storage_operator_using_the_operator_hub"></a>1. Installing Red Hat OpenShift Container Storage Operator using the Operator Hub</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Start with creating the <code>openshift-storage</code> namespace.</p>
+</div>
+<div class="listingblock execute">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-shell hljs" data-lang="shell">oc create namespace openshift-storage</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>You must add the monitoring label to this namespace. This is required to get prometheus metrics and alerts for the OCP storage dashboards. To label the <code>openshift-storage</code> namespace use the following command:</p>
+</div>
+<div class="listingblock execute">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-shell hljs" data-lang="shell">oc label namespace openshift-storage "openshift.io/cluster-monitoring=true"</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Now switch over to your <strong>Openshift Web Console</strong>. You can get your URL by issuing command below to get the OCP 4 <code>console</code> route.</p>
+</div>
+<div class="listingblock execute">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-shell hljs" data-lang="shell">oc get -n openshift-console route console</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Once you are logged in, navigate to the <strong>OperatorHub</strong> menu.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="_images/OCS-OCP-OperatorHub.png" alt="OCP OperatorHub">
+</div>
+<div class="title">Figure 1. OCP OperatorHub</div>
+</div>
+<div class="paragraph">
+<p>Now type <code>openshift container storage</code> in the <strong>Filter by <em>keyword&#8230;&#8203;</em></strong> box.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="_images/OCS4-OCP-OperatorHub-Filter.png" alt="OCP OperatorHub Filter">
+</div>
+<div class="title">Figure 2. OCP OperatorHub filter on OpenShift Container Storage Operator</div>
+</div>
+<div class="paragraph">
+<p>Select <code>OpenShift Container Storage Operator</code> and then select <strong>Install</strong>.</p>
+</div>
+<div class="paragraph">
+<p>On the next screen make sure the settings are as shown in this figure. Also, make sure to change to <code>A specific namespace on the cluster</code> and chose namespace <code>openshift-storage</code>.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="_images/OCS4-OCP-OperatorHub-Subscribe.png" alt="OCP OperatorHub Subscribe">
+</div>
+<div class="title">Figure 3. OCP Subscribe to OpenShift Container Storage</div>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+Do not change any configuration other than the namespace as shown above.
+</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>Click <code>Subscribe</code>.</p>
+</div>
+<div class="paragraph">
+<p>Now you can go back to your terminal window to check the progress of the installation.</p>
+</div>
+<div class="listingblock execute">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-shell hljs" data-lang="shell">watch oc -n openshift-storage get csv</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="title">Example output:</div>
+<div class="content">
+<pre>NAME                            DISPLAY                       VERSION   REPLACES   PHASE
+lib-bucket-provisioner.v1.0.0   lib-bucket-provisioner        1.0.0                Succeeded
+ocs-operator.v4.4.0             OpenShift Container Storage   4.4.0                Succeeded</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>You can exit by pressing <span class="keyseq"><kbd>Ctrl</kbd>+<kbd>C</kbd></span></p>
+</div>
+<div class="paragraph">
+<p>The resource <code>csv</code> is a shortened word for <code>clusterserviceversions.operators.coreos.com</code>.</p>
+</div>
+<div class="admonitionblock caution">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-caution" title="Caution"></i>
+</td>
+<td class="content">
+<div class="title">Please wait until both operators <code>PHASE</code> changes to <code>Succeeded</code></div>
+Reaching this state can take several minutes.
+</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>You will now also see operator pods have been started in the <code>openshift-storage</code> namespace:</p>
+</div>
+<div class="listingblock execute">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-shell hljs" data-lang="shell">oc -n openshift-storage get pods</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="title">Example output:</div>
+<div class="content">
+<pre>NAME                                      READY   STATUS    RESTARTS   AGE
+lib-bucket-provisioner-55f74d96f6-mkrz2   1/1     Running   0          3m48s
+noobaa-operator-68c8fbdff5-kgxxt          1/1     Running   0          3m41s
+ocs-operator-78d98758db-dwc8h             1/1     Running   0          3m41s
+rook-ceph-operator-55cb44fcfc-wxppc       1/1     Running   0          3m41s</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Navigate to the <code>Operators</code> menu on the left and select <code>Installed Operators</code>. Make sure the selected project at the top of the UI pane is set to <code>openshift-storage</code>. What you see should be similar to the following example:</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="_images/OCP4-installed-operators.png" alt="Openshift showing the installed operators in namespace openshift-storage">
+</div>
+</div>
+<div class="paragraph">
+<p>Now that the operator pods are running, you can create a Storage Cluster.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_installing_openshift_container_storage_on_local_storage_devices"><a class="anchor" href="#_installing_openshift_container_storage_on_local_storage_devices"></a>2. Installing OpenShift Container Storage on Local Storage Devices</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Use this procedure to install OpenShift Container Storage (OCS) on bare metal, Amazon EC2, and VMware infrastructures where OpenShift Container Platform 4 (OCP) is already installed.</p>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+<div class="paragraph">
+<p>The following sections use YAML files and CLI to create resources used to deploy OCS 4 on local storage devices. In future releases of OCP 4 and OCS 4 these operations will have the option of being done using the <strong>Openshift Web Console</strong> UI making using local storage easier and less error prone.</p>
+</div>
+</td>
+</tr>
+</table>
+</div>
+<div class="admonitionblock important">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-important" title="Important"></i>
+</td>
+<td class="content">
+<div class="paragraph">
+<p>Installing OpenShift Container Storage Amazon EC2 using local storage operator is a Technology Preview feature. Technology Preview features are not supported with Red Hat production service level agreements (SLAs) and might not be functionally complete. Red Hat does not recommend using them in production. These features provide early access to upcoming product features, enabling customers to test functionality and provide feedback during the development process.</p>
+</div>
+</td>
+</tr>
+</table>
+</div>
+<div class="sect2">
+<h3 id="_prerequisites"><a class="anchor" href="#_prerequisites"></a>2.1. Prerequisites</h3>
+<div class="ulist">
+<ul>
+<li>
+<p>You must have at least 3 OCP worker nodes in the cluster with locally attached storage devices on each of them.</p>
+</li>
+<li>
+<p>Each worker node must have a minimum of 12 CPUs and 64 GB Memory.</p>
+</li>
+<li>
+<p>Each of the 3 worker nodes must have at least one available raw block device available to be used by OCS (e.g., 100 GB size).</p>
+</li>
+<li>
+<p>You must have a minimum of three labeled worker nodes.</p>
+<div class="ulist">
+<ul>
+<li>
+<p>Each OCP worker node must have an specific label to deploy OCS <strong>Pods</strong>. To label the nodes use the following command:</p>
+</li>
+</ul>
+</div>
+</li>
+</ul>
+</div>
+<div class="listingblock execute">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-shell hljs" data-lang="shell">oc label node &lt;NodeName&gt; cluster.ocs.openshift.io/openshift-storage=''</code></pre>
+</div>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+Make sure to add this label to all OCP workers that have local storage devices to be used by OCS.
+</td>
+</tr>
+</table>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>No other storage providers managing locally mounted storage on the storage nodes should be present that will conflict with the Local Storage Operator (LSO).</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_installing_the_local_storage_operator"><a class="anchor" href="#_installing_the_local_storage_operator"></a>2.2. Installing the Local Storage Operator</h3>
+<div class="paragraph">
+<p>Start with creating the <code>local-storage</code> namespace.</p>
+</div>
+<div class="listingblock execute">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-shell hljs" data-lang="shell">oc new-project local-storage</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Now switch over to your <strong>Openshift Web Console</strong> and select <strong>OperatorHub</strong>. Type <code>local storage</code> in the <strong>Filter by <em>keyword&#8230;&#8203;</em></strong> box.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="_images/OCP4-LSO-filter.png" alt="OperatorHub LSO Operator filter">
+</div>
+</div>
+<div class="paragraph">
+<p>Select <code>Local Storage Operator</code> and then select <strong>Install</strong>.</p>
+</div>
+<div class="paragraph">
+<p>On the next screen make sure the settings are as shown in this figure. Also, make sure to change to <code>A specific namespace on the cluster</code> and chose namespace <code>local-storage</code>.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="_images/OCS4-OCP-OperatorHub-LSO-Subscribe.png" alt="OCP OperatorHub Subscribe">
+</div>
+<div class="title">Figure 4. OCP Subscribe to Local Storage Operator</div>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+Do not change any configuration other than the namespace as shown above.
+</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>Click <code>Subscribe</code>.</p>
+</div>
+<div class="paragraph">
+<p>Now you can go back to your terminal window to check the progress of the installation.</p>
+</div>
+<div class="listingblock execute">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-shell hljs" data-lang="shell">oc -n local-storage get pods</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="title">Example output:</div>
+<div class="content">
+<pre>NAME                                     READY   STATUS    RESTARTS   AGE
+local-storage-operator-765dc5b87-vfh69   1/1     Running   0          23s</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>The Local Storage Operator (LSO) has been successfully installed. Now move on to creating local persistent volumes (PVs) on the storage nodes using LocalVolume Custom Resource (CR) files.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_finding_available_storage_devices"><a class="anchor" href="#_finding_available_storage_devices"></a>2.3. Finding Available Storage Devices</h3>
+<div class="paragraph">
+<p>Using LSO to create <strong>PVs</strong> can be done for bare metal, Amazon EC2, or VMware storage devices. What you must know is the exact device name on each of the 3 or more OCP worker nodes you labeled with OCS label <code>cluster.ocs.openshift.io/openshift-storage=''</code>. The method to do this is to logon to each node and verify the device names as well, the size of each device, and that the device is available.</p>
+</div>
+<div class="paragraph">
+<p>First verify the names of the worker nodes with the OCS label:</p>
+</div>
+<div class="listingblock execute">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-shell hljs" data-lang="shell">oc get nodes -l cluster.ocs.openshift.io/openshift-storage=</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="title">Example output:</div>
+<div class="content">
+<pre>NAME                                         STATUS   ROLES    AGE     VERSION
+ip-10-0-135-71.us-east-2.compute.internal    Ready    worker   6h45m   v1.16.2
+ip-10-0-145-125.us-east-2.compute.internal   Ready    worker   6h45m   v1.16.2
+ip-10-0-160-91.us-east-2.compute.internal    Ready    worker   6h45m   v1.16.2</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Now that you have the worker nodes that have the OCS label you can logon to each node (or a single node if they are all the same) and verify the device name for each available raw block device.</p>
+</div>
+<div class="listingblock execute">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-shell hljs" data-lang="shell">oc debug node/&lt;NodeName&gt;</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="title">Example output:</div>
+<div class="content">
+<pre>oc debug node/ip-10-0-135-71.us-east-2.compute.internal
+Starting pod/ip-10-0-135-71us-east-2computeinternal-debug ...
+To use host binaries, run `chroot /host`
+Pod IP: 10.0.135.71
+If you don't see a command prompt, try pressing enter.
+sh-4.2# chroot /host
+sh-4.4# lsblk
+NAME                         MAJ:MIN RM   SIZE RO TYPE MOUNTPOINT
+xvda                         202:0    0   120G  0 disk
+|-xvda1                      202:1    0   384M  0 part /boot
+|-xvda2                      202:2    0   127M  0 part /boot/efi
+|-xvda3                      202:3    0     1M  0 part
+`-xvda4                      202:4    0 119.5G  0 part
+  `-coreos-luks-root-nocrypt 253:0    0 119.5G  0 dm   /sysroot
+nvme0n1                      259:0    0   1.7T  0 disk
+nvme1n1                      259:1    0   1.7T  0 disk</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>In this case the EC2 instance type is i3.4xlarge so we know all 3 worker nodes are the same. As shown above the results of 'lsblk' shows the last 2 devices, <code>nvme0n1</code> and <code>nvme1n1</code> are available with a size of 1.7 TB each. Next step is to create new <strong>PVs</strong> using these devices.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_using_the_lso_localvolume_custom_resource_to_create_pvs"><a class="anchor" href="#_using_the_lso_localvolume_custom_resource_to_create_pvs"></a>2.4. Using the LSO LocalVolume Custom Resource to Create PVs</h3>
+<div class="paragraph">
+<p>The next step is to create the LSO LocalVolume CR which in turn will create <strong>PVs</strong> and a new <strong>StorageClass</strong> for creating Ceph storage.</p>
+</div>
+<div class="listingblock">
+<div class="title">LocalVolume CR local-storage-block.yaml using OCS label as Node Selector:</div>
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-yaml hljs" data-lang="yaml">apiVersion: local.storage.openshift.io/v1
+kind: LocalVolume
+metadata:
+  name: local-block
+  namespace: local-storage
+spec:
+  nodeSelector:
+    nodeSelectorTerms:
+    - matchExpressions:
+        - key: cluster.ocs.openshift.io/openshift-storage
+          operator: In
+          values:
+          - ""
+  storageClassDevices:
+    - storageClassName: localblock
+      volumeMode: Block
+      devicePaths:
+        - /dev/nvme0n1             # &lt;-- modify this line
+        - /dev/nvme1n1             # &lt;-- modify this line</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Create this LocalVolume CR using the following command:</p>
+</div>
+<div class="listingblock execute">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-shell hljs" data-lang="shell">oc create -f local-storage-block.yaml</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="title">Example output:</div>
+<div class="content">
+<pre>localvolume.local.storage.openshift.io/local-block created</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Now that the CR is created let&#8217;s see the results.</p>
+</div>
+<div class="listingblock execute">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-shell hljs" data-lang="shell">oc -n local-storage get pods</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="title">Example output:</div>
+<div class="content">
+<pre>NAME                                     READY   STATUS    RESTARTS   AGE
+local-block-local-diskmaker-kkp7j        1/1     Running   0          5m1s
+local-block-local-diskmaker-nqcgl        1/1     Running   0          5m1s
+local-block-local-diskmaker-szd72        1/1     Running   0          5m1s
+local-block-local-provisioner-bsztg      1/1     Running   0          5m1s
+local-block-local-provisioner-g9zgf      1/1     Running   0          5m1s
+local-block-local-provisioner-gzktp      1/1     Running   0          5m1s
+local-storage-operator-765dc5b87-vfh69   1/1     Running   0          53m</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>There should now be a new <strong>PV</strong> for each of the local storage devices on the 3 worker nodes. Remember when we checked above there were 2 available storage devices per worker node and the size for each was 1.7 TB.</p>
+</div>
+<div class="listingblock execute">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-shell hljs" data-lang="shell">oc get pv</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="title">Example output:</div>
+<div class="content">
+<pre>NAME                CAPACITY   ACCESS MODES   RECLAIM POLICY   STATUS      CLAIM   STORAGECLASS   REASON   AGE
+local-pv-40bd1474   1769Gi     RWO            Delete           Available           localblock              5m53s
+local-pv-53994ff9   1769Gi     RWO            Delete           Available           localblock              5m53s
+local-pv-66631f85   1769Gi     RWO            Delete           Available           localblock              5m52s
+local-pv-c56e9c     1769Gi     RWO            Delete           Available           localblock              5m53s
+local-pv-c63a7061   1769Gi     RWO            Delete           Available           localblock              5m53s
+local-pv-d2a3dcde   1769Gi     RWO            Delete           Available           localblock              5m52s</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>And finally we should have an additional <strong>StorageClass</strong> as a result of creating this LocalVolume CR. This <strong>StorageClass</strong> will be used when creating <strong>PVCs</strong> in the next step of creating a <strong>StorageCluster</strong>.</p>
+</div>
+<div class="listingblock execute">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-shell hljs" data-lang="shell">oc get sc</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="title">Example output:</div>
+<div class="content">
+<pre>NAME            PROVISIONER                    AGE
+gp2 (default)   kubernetes.io/aws-ebs          7h14m
+localblock      kubernetes.io/no-provisioner   7m46s</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>The next sections will detail how to create and validate the OCS <strong>StorageCluster</strong> using Amazon EC2, VMware, and bare metal local storage devices.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_creating_the_ocs_storage_cluster_on_aws"><a class="anchor" href="#_creating_the_ocs_storage_cluster_on_aws"></a>2.5. Creating the OCS Storage Cluster on AWS</h3>
+<div class="paragraph">
+<p>For Amazon EC2 instance that have local storage devices (e.g., i3.4xlarge) we need to create a <strong>StorageCluster</strong> Custom Resource (CR) that will use the <code>localblock</code> <strong>StorageClass</strong> and 3 of the 6 <strong>PVs</strong> created in the previous section.</p>
+</div>
+<div class="listingblock">
+<div class="title">StorageCluster CR ocs-cluster-service.yaml using <code>gp2</code> and <code>localblock</code> storageclasses:</div>
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-yaml hljs" data-lang="yaml">apiVersion: ocs.openshift.io/v1
+kind: StorageCluster
+metadata:
+  name: ocs-storagecluster
+  namespace: openshift-storage
+spec:
+  manageNodes: false
+  monPVCTemplate:
+    spec:
+      accessModes:
+      - ReadWriteOnce
+      resources:
+        requests:
+          storage: 10Gi
+      storageClassName: gp2
+      volumeMode: Filesystem
+  storageDeviceSets:
+  - count: 1
+    dataPVCTemplate:
+      spec:
+        accessModes:
+        - ReadWriteOnce
+        resources:
+          requests:
+            storage: 1
+        storageClassName: localblock
+        volumeMode: Block
+    name: ocs-deviceset
+    placement: {}
+    portable: false
+    replica: 3
+    resources: {}</code></pre>
+</div>
+</div>
+<div class="admonitionblock important">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-important" title="Important"></i>
+</td>
+<td class="content">
+<div class="paragraph">
+<p>The <code>storage</code> size for <strong>storageDeviceSets</strong> must be less than or equal to the size of the raw block devices. Setting the value to <code>1</code> will guarantee that this requirement is met.</p>
+</div>
+</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>Create this StorageCluster CR using the following command:</p>
+</div>
+<div class="listingblock execute">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-shell hljs" data-lang="shell">oc create -f https://raw.githubusercontent.com/red-hat-storage/ocs-training/master/ocp4ocs4/yamls/cluster-service-AWS.yaml</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="title">Example output:</div>
+<div class="content">
+<pre>storagecluster.ocs.openshift.io/ocs-storagecluster created</pre>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_validating_the_successful_ocs_storage_cluster_creation_on_aws"><a class="anchor" href="#_validating_the_successful_ocs_storage_cluster_creation_on_aws"></a>2.5.1. Validating the successful OCS Storage Cluster creation on AWS</h4>
+<div class="paragraph">
+<p>Once the <strong>StorageCluster</strong> is created OCS pods will start showing up in the <code>openshift-storage</code> namespace. For the deployment to completely finish could take up to 10 minutes so be patient. Below you will find examples of a successful deployment of the OCS <strong>Pods</strong> and <strong>PVCs</strong>.</p>
+</div>
+<div class="listingblock execute">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-shell hljs" data-lang="shell">oc -n openshift-storage get pods</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="title">Example output:</div>
+<div class="content">
+<pre>NAME                                                                  READY   STATUS      RESTARTS   AGE
+pod/csi-cephfsplugin-kzfrx                                            3/3     Running     0          7m49s
+pod/csi-cephfsplugin-provisioner-67777bbbc9-j28s9                     5/5     Running     0          7m49s
+pod/csi-cephfsplugin-provisioner-67777bbbc9-nrghg                     5/5     Running     0          7m49s
+pod/csi-cephfsplugin-vm4qw                                            3/3     Running     0          7m49s
+pod/csi-cephfsplugin-xzqc6                                            3/3     Running     0          7m49s
+pod/csi-rbdplugin-9jvmd                                               3/3     Running     0          7m50s
+pod/csi-rbdplugin-bzpb2                                               3/3     Running     0          7m50s
+pod/csi-rbdplugin-provisioner-8569698c9b-hdzgh                        5/5     Running     0          7m49s
+pod/csi-rbdplugin-provisioner-8569698c9b-ll9wm                        5/5     Running     0          7m49s
+pod/csi-rbdplugin-tf68q                                               3/3     Running     0          7m50s
+pod/lib-bucket-provisioner-55f74d96f6-mkrz2                           1/1     Running     0          162m
+pod/noobaa-core-0                                                     1/1     Running     0          3m37s
+pod/noobaa-db-0                                                       1/1     Running     0          3m37s
+pod/noobaa-endpoint-679dfc8669-2cxt5                                  1/1     Running     0          2m12s
+pod/noobaa-operator-68c8fbdff5-kgxxt                                  1/1     Running     0          162m
+pod/ocs-operator-78d98758db-dwc8h                                     1/1     Running     0          162m
+pod/rook-ceph-crashcollector-ip-10-0-135-71-7f4647b5f5-cp4nt          1/1     Running     0          4m35s
+pod/rook-ceph-crashcollector-ip-10-0-145-125-f765fc64b-tnlrp          1/1     Running     0          5m42s
+pod/rook-ceph-crashcollector-ip-10-0-160-91-5fb874cd6c-4bqvl          1/1     Running     0          6m29s
+pod/rook-ceph-drain-canary-86f0e65050c75c523a149de3c6c7b27c-85f4255   1/1     Running     0          3m41s
+pod/rook-ceph-drain-canary-a643022da9a50239ad6fc41164ccb7c4-7cnjt4n   1/1     Running     0          3m42s
+pod/rook-ceph-drain-canary-e290c9c7dc116eb65fcb3ad57067aa65-54mgcfs   1/1     Running     0          3m38s
+pod/rook-ceph-mds-ocs-storagecluster-cephfilesystem-a-7d7d5b5fxqdbs   1/1     Running     0          3m24s
+pod/rook-ceph-mds-ocs-storagecluster-cephfilesystem-b-6899b5b6znmtx   1/1     Running     0          3m23s
+pod/rook-ceph-mgr-a-544b89b5c6-l6s2l                                  1/1     Running     0          4m14s
+pod/rook-ceph-mon-a-b74c86ddf-dq25t                                   1/1     Running     0          5m15s
+pod/rook-ceph-mon-b-7cb5446957-kxz4w                                  1/1     Running     0          4m51s
+pod/rook-ceph-mon-c-56d689c77c-gb5n9                                  1/1     Running     0          4m35s
+pod/rook-ceph-operator-55cb44fcfc-wxppc                               1/1     Running     0          162m
+pod/rook-ceph-osd-0-74b8654667-kccs8                                  1/1     Running     0          3m42s
+pod/rook-ceph-osd-1-7cc9444867-wzvmh                                  1/1     Running     0          3m41s
+pod/rook-ceph-osd-2-5b5c4dcd57-tr5ck                                  1/1     Running     0          3m38s
+pod/rook-ceph-osd-prepare-ocs-deviceset-0-0-dq89h-pzh4d               0/1     Completed   0          3m55s
+pod/rook-ceph-osd-prepare-ocs-deviceset-1-0-wnbrp-7ls8b               0/1     Completed   0          3m55s
+pod/rook-ceph-osd-prepare-ocs-deviceset-2-0-xst6j-mjpv7               0/1     Completed   0          3m55s</pre>
+</div>
+</div>
+<div class="listingblock execute">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-shell hljs" data-lang="shell">oc -n openshift-storage get pvc</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="title">Example output:</div>
+<div class="content">
+<pre>NAME                                            STATUS   VOLUME                                     CAPACITY   ACCESS MODES   STORAGECLASS                  AGE
+persistentvolumeclaim/db-noobaa-db-0            Bound    pvc-99634049-ee21-490d-9fa7-927bbf3c87bc   50Gi       RWO            ocs-storagecluster-ceph-rbd   4m16s
+persistentvolumeclaim/ocs-deviceset-0-0-dq89h   Bound    local-pv-40bd1474                          1769Gi     RWO            localblock                    4m35s
+persistentvolumeclaim/ocs-deviceset-1-0-wnbrp   Bound    local-pv-66631f85                          1769Gi     RWO            localblock                    4m35s
+persistentvolumeclaim/ocs-deviceset-2-0-xst6j   Bound    local-pv-c56e9c                            1769Gi     RWO            localblock                    4m35s
+persistentvolumeclaim/rook-ceph-mon-a           Bound    pvc-0cc612ce-22ff-4f3c-bc0d-147e88d45df3   10Gi       RWO            gp2                           7m55s
+persistentvolumeclaim/rook-ceph-mon-b           Bound    pvc-7c0187c1-1000-4d3b-8b31-d17235328082   10Gi       RWO            gp2                           7m44s
+persistentvolumeclaim/rook-ceph-mon-c           Bound    pvc-e30645cd-1733-46c5-b0bf-566bdd0d2ab8   10Gi       RWO            gp2                           7m34s</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>If we now look again at the <strong>PVs</strong> we will see 3 are still available to be used for an <strong>Add Capacity</strong> activity in the future if more storage is needed for the <strong>StorageCluster</strong></p>
+</div>
+<div class="listingblock execute">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-shell hljs" data-lang="shell">oc get pv | grep localblock</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="title">Example output:</div>
+<div class="content">
+<pre>local-pv-40bd1474                          1769Gi     RWO            Delete           Bound       openshift-storage/ocs-deviceset-0-0-dq89h   localblock                             46m
+local-pv-53994ff9                          1769Gi     RWO            Delete           Available                                               localblock                             46m
+local-pv-66631f85                          1769Gi     RWO            Delete           Bound       openshift-storage/ocs-deviceset-1-0-wnbrp   localblock                             46m
+local-pv-c56e9c                            1769Gi     RWO            Delete           Bound       openshift-storage/ocs-deviceset-2-0-xst6j   localblock                             46m
+local-pv-c63a7061                          1769Gi     RWO            Delete           Available                                               localblock                             46m
+local-pv-d2a3dcde                          1769Gi     RWO            Delete           Available                                               localblock                             46m</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>You can check the status of the storage cluster with the following:</p>
+</div>
+<div class="listingblock execute">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-shell hljs" data-lang="shell">oc get storagecluster -n openshift-storage</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="title">Example output:</div>
+<div class="content">
+<pre>NAME                 AGE   PHASE   CREATED AT             VERSION
+ocs-storagecluster   14m   Ready   2020-03-11T22:52:04Z   4.3.0</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>If it says <code>Ready</code> you can continue on to using OCS storage for applications.</p>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_creating_the_ocs_storage_cluster_on_vmware"><a class="anchor" href="#_creating_the_ocs_storage_cluster_on_vmware"></a>2.6. Creating the OCS Storage Cluster on VMware</h3>
+<div class="paragraph">
+<p>The process for using local storage devices for OCP on VMware environments is very similar but has some differences. The first is the types of local storage that is supported for VMware. The 3 types are the following:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>VMDK</p>
+</li>
+<li>
+<p>Raw Device Mapping (RDM)</p>
+</li>
+<li>
+<p>VMDirectPath</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>In order to use local storage devices on VMware you must have a minimum of 3 worker nodes with the <code>same</code> storage type attached to each node.</p>
+</div>
+<div class="paragraph">
+<p>Once this has been done you can use a similar method as done for AWS by logging on to the OCP worker nodes with the OCS label (see <a href="#_prerequisites">Prerequisites</a>) and issuing a <code>lsblk</code>. By inspecting the results of this command you will know which devices are available and what the size of each device is (e.g., /dev/sdb is 100 GB). See <a href="#_finding_available_storage_devices">Finding Available Storage Devices</a> for more details.</p>
+</div>
+<div class="paragraph">
+<p>For Monitor storage in the StorageCluster CR use <strong>monDataDirHostPath</strong> and set its value to /var/lib/rook.</p>
+</div>
+<div class="paragraph">
+<p>Now create the LocalVolume CR for Block <strong>PVs</strong>.</p>
+</div>
+<div class="listingblock">
+<div class="title">LocalVolume CR local-storage-block.yaml using OCS label as Node Selector:</div>
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-yaml hljs" data-lang="yaml">apiVersion: local.storage.openshift.io/v1
+kind: LocalVolume
+metadata:
+  name: local-block
+  namespace: local-storage
+spec:
+  nodeSelector:
+    nodeSelectorTerms:
+    - matchExpressions:
+        - key: cluster.ocs.openshift.io/openshift-storage
+          operator: In
+          values:
+          - ""
+  storageClassDevices:
+    - storageClassName: localblock
+      volumeMode: Block
+      devicePaths:
+        - /dev/sdc             # &lt;-- modify this line</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Create this LocalVolume CR for Block <strong>PVs</strong> using the following command:</p>
+</div>
+<div class="listingblock execute">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-shell hljs" data-lang="shell">oc create -f local-storage-block.yaml</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Check for the new <code>localblock</code> <strong>StorageClass</strong>.</p>
+</div>
+<div class="listingblock execute">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-shell hljs" data-lang="shell">oc get sc | grep localblock</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="title">Example output:</div>
+<div class="content">
+<pre>NAME            PROVISIONER                     AGE
+localblock      kubernetes.io/no-provisioner    8m38s</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Reference <a href="#_using_the_lso_localvolume_custom_resource_to_create_pvs">Using the LSO LocalVolume Custom Resource to Create PVs</a> for more commands to validate the creation of <code>local-storage</code> <strong>Pods</strong> and <strong>PVs</strong> associated to each local storage device listed under <code>devicePaths</code> in the LocalVolume CR(s).</p>
+</div>
+<div class="paragraph">
+<p>The last step for using local storage on VMware is to create the <strong>StorageCluster</strong>. This is again very similar to how it was done for AWS but with a few changes.</p>
+</div>
+<div class="listingblock">
+<div class="title">StorageCluster CR ocs-cluster-service.yaml using <code>localblock</code> storageclass:</div>
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-yaml hljs" data-lang="yaml">apiVersion: ocs.openshift.io/v1
+kind: StorageCluster
+metadata:
+  name: ocs-storagecluster
+  namespace: openshift-storage
+spec:
+  manageNodes: false
+  monDataDirHostPath: /var/lib/rook
+  storageDeviceSets:
+  - count: 1
+    dataPVCTemplate:
+      spec:
+        accessModes:
+        - ReadWriteOnce
+        resources:
+          requests:
+            storage: 1
+        storageClassName: localblock
+        volumeMode: Block
+    name: ocs-deviceset
+    placement: {}
+    portable: false
+    replica: 3
+    resources: {}</code></pre>
+</div>
+</div>
+<div class="admonitionblock important">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-important" title="Important"></i>
+</td>
+<td class="content">
+<div class="paragraph">
+<p>The <code>storage</code> size for <strong>monPVCTemplate:</strong> and <strong>storageDeviceSets</strong> must be less than or equal to the size of the raw block devices. Setting the value to <code>1</code> for both will guarantee that this requirement is met.</p>
+</div>
+</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>Create this StorageCluster CR using the following command:</p>
+</div>
+<div class="listingblock execute">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-shell hljs" data-lang="shell">oc create -f https://raw.githubusercontent.com/red-hat-storage/ocs-training/master/ocp4ocs4/yamls/cluster-service-VMware.yaml</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="title">Example output:</div>
+<div class="content">
+<pre>storagecluster.ocs.openshift.io/ocs-storagecluster created</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Reference <a href="#_validating_the_successful_ocs_storage_cluster_creation_on_aws">Validating the successful OCS Storage Cluster creation on AWS</a> for how to validate your <strong>StorageCluster</strong> deployment.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_creating_the_ocs_storage_cluster_on_bare_metal"><a class="anchor" href="#_creating_the_ocs_storage_cluster_on_bare_metal"></a>2.7. Creating the OCS Storage Cluster on Bare Metal</h3>
+<div class="paragraph">
+<p>The process for using local storage devices for OCP on bare methal environments is very similar to both AWS and VMware environments with some differences.</p>
+</div>
+<div class="paragraph">
+<p>In order to use local storage devices on bare metal servers you must have a minimum of 3 worker nodes. Each of the machines must have at least one raw block device and the <code>same</code> storage type attached to each node (.e.g., 2TB NVMe Hard Drive).</p>
+</div>
+<div class="paragraph">
+<p>To identify the storage devices on each node use the same method as the one used for AWS and VMWare environments by logging on to each OCS worker node and issuing a lsblk command. By inspecting the results of this command you will know which devices are available and their size. See <a href="#_finding_available_storage_devices">Finding Available Storage Devices</a> for more details.</p>
+</div>
+<div class="paragraph">
+<p>For Monitor storage in the StorageCluster CR use <strong>monDataDirHostPath</strong> and set its value to /var/lib/rook.</p>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+<div class="paragraph">
+<p>You can also configure a raw block device with a Filesystem mode for Monitor Storage as demonstrated in the VMWare section. The downside of this method is that the Monitors have a minimum requirement of only 10 GB while local storage devices will always be larger. This will result in wasting the local storage space.</p>
+</div>
+</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>First step is to create the LocalVolume CR for Block <strong>PVs</strong>.</p>
+</div>
+<div class="listingblock">
+<div class="title">LocalVolume CR local-storage-block.yaml using OCS label as Node Selector:</div>
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-yaml hljs" data-lang="yaml">apiVersion: local.storage.openshift.io/v1
+kind: LocalVolume
+metadata:
+  name: local-block
+  namespace: local-storage
+spec:
+  nodeSelector:
+    nodeSelectorTerms:
+    - matchExpressions:
+        - key: cluster.ocs.openshift.io/openshift-storage
+          operator: In
+          values:
+          - ""
+  storageClassDevices:
+    - storageClassName: localblock
+      volumeMode: Block
+      devicePaths:
+        - /dev/sdb             # &lt;-- modify this line
+        - /dev/sdc             # &lt;-- modify this line
+        - /dev/sdd             # &lt;-- modify this line
+        - /dev/sde             # &lt;-- modify this line
+        - /dev/sdf             # &lt;-- modify this line
+        - /dev/sdg             # &lt;-- modify this line</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Create this LocalVolume CR for Block <strong>PVs</strong> using the following command:</p>
+</div>
+<div class="listingblock execute">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-shell hljs" data-lang="shell">oc create -f local-storage-file.yaml</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Check for the new <code>localblock</code> <strong>StorageClass</strong>.</p>
+</div>
+<div class="listingblock execute">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-shell hljs" data-lang="shell">oc get sc | grep localblock</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="title">Example output:</div>
+<div class="content">
+<pre>NAME            PROVISIONER                     AGE
+localblock      kubernetes.io/no-provisioner    10m20s</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Reference <a href="#_using_the_lso_localvolume_custom_resource_to_create_pvs">Using the LSO LocalVolume Custom Resource to Create PVs</a> for more commands to validate creation of <code>local-storage</code> <strong>Pods</strong> and <strong>PVs</strong> created from storage devices listed under <code>devicePaths</code> in the LocalVolume CR.</p>
+</div>
+<div class="paragraph">
+<p>The last step for using local storage on bare metal servers is to create the <strong>StorageCluster</strong>. This is again very similar to how it was done for AWS and VMware but with a few changes.</p>
+</div>
+<div class="listingblock">
+<div class="title">StorageCluster CR ocs-cluster-service.yaml using <code>monDataDirHostPath</code> and <code>localblock</code> storageclass:</div>
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-yaml hljs" data-lang="yaml">apiVersion: ocs.openshift.io/v1
+kind: StorageCluster
+metadata:
+  name: ocs-storagecluster
+  namespace: openshift-storage
+spec:
+  manageNodes: false
+  monDataDirHostPath: /var/lib/rook
+  storageDeviceSets:
+  - count: 1
+    dataPVCTemplate:
+      spec:
+        accessModes:
+        - ReadWriteOnce
+        resources:
+          requests:
+            storage: 1
+        storageClassName: localblock
+        volumeMode: Block
+    name: ocs-deviceset
+    placement: {}
+    portable: false
+    replica: 3
+    resources: {}</code></pre>
+</div>
+</div>
+<div class="admonitionblock important">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-important" title="Important"></i>
+</td>
+<td class="content">
+<div class="paragraph">
+<p>The <code>storage</code> size for <strong>storageDeviceSets</strong> must be less than or equal to the size of the raw block devices. Setting the value to <code>1</code> for both will guarantee that this requirement is met.</p>
+</div>
+</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>Create this StorageCluster CR using the following command:</p>
+</div>
+<div class="listingblock execute">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-shell hljs" data-lang="shell">oc create -f https://raw.githubusercontent.com/red-hat-storage/ocs-training/master/ocp4ocs4/yamls/cluster-service-metal.yaml</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="title">Example output:</div>
+<div class="content">
+<pre>storagecluster.ocs.openshift.io/ocs-storagecluster created</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Reference <a href="#_validating_the_successful_ocs_storage_cluster_creation_on_aws">Validating the successful OCS Storage Cluster creation on AWS</a> for how to validate your <strong>StorageCluster</strong> deployment.</p>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_using_the_rook_ceph_toolbox_to_validate_ceph_backing_storage"><a class="anchor" href="#_using_the_rook_ceph_toolbox_to_validate_ceph_backing_storage"></a>3. Using the Rook-Ceph toolbox to Validate Ceph backing storage</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Starting with OpenShift Container Storage 4.3 the deployment of a <strong>toolbox</strong> can be created by modifying the <strong>CustomResource</strong> <code>OCSInitialization</code>.</p>
+</div>
+<div class="paragraph">
+<p>You can either patch the <code>OCSInitialization ocsinit</code> using the following command line:</p>
+</div>
+<div class="listingblock execute">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-shell hljs" data-lang="shell">oc patch OCSInitialization ocsinit -n openshift-storage --type json --patch  '[{ "op": "replace", "path": "/spec/enableCephTools", "value": true }]'</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Or you can edit the <code>OCSInitialization ocsinit</code> to toggle the <code>enableCephTools</code> parameter to <strong>true</strong> using the following command line:</p>
+</div>
+<div class="listingblock execute">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-shell hljs" data-lang="shell">oc edit OCSInitialization ocsinit</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>The <code>spec</code> item must be set to the following value:</p>
+</div>
+<div class="listingblock execute">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-shell hljs" data-lang="shell">spec:
+  enableCephTools: true</code></pre>
+</div>
+</div>
+<div class="admonitionblock important">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-important" title="Important"></i>
+</td>
+<td class="content">
+<div class="paragraph">
+<p>Toggling the value from <code>true</code> to <code>false</code> will terminate any running <strong>toolbox</strong> pod immediately.</p>
+</div>
+</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>After the <code>rook-ceph-tools</code> <strong>Pod</strong> is <code>Running</code> you can access the toolbox like this:</p>
+</div>
+<div class="listingblock execute">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-shell hljs" data-lang="shell">TOOLS_POD=$(oc get pods -n openshift-storage -l app=rook-ceph-tools -o name)
+oc rsh -n openshift-storage $TOOLS_POD</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Once inside the toolbox, try out the following Ceph commands to see the status of Ceph, the total number of OSDs (example below shows six after expanding storage), and the total amount of storage available in the cluster.</p>
+</div>
+<div class="listingblock execute">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-shell hljs" data-lang="shell">ceph status</code></pre>
+</div>
+</div>
+<div class="listingblock execute">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-shell hljs" data-lang="shell">ceph osd status</code></pre>
+</div>
+</div>
+<div class="listingblock execute">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-shell hljs" data-lang="shell">ceph osd tree</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="title">Example output:</div>
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-shell hljs" data-lang="shell">sh-4.2# ceph status
+  cluster:
+    id:     fb084de5-e7c8-47f4-9c45-e57953fc44fd
+    health: HEALTH_OK
+
+  services:
+    mon: 3 daemons, quorum a,b,c (age 23m)
+    mgr: a(active, since 42m)
+    mds: ocs-storagecluster-cephfilesystem:1 {0=ocs-storagecluster-cephfilesystem-b=up:active} 1 up:standby-replay
+    osd: 6 osds: 6 up (since 22m), 6 in (since 22m)
+
+  data:
+    pools:   3 pools, 136 pgs
+    objects: 95 objects, 94 MiB
+    usage:   6.1 GiB used, 10 TiB / 10 TiB avail
+    pgs:     136 active+clean
+
+  io:
+    client:   853 B/s rd, 25 KiB/s wr, 1 op/s rd, 3 op/s wr</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>You can exit the toolbox by either pressing <span class="keyseq"><kbd>Ctrl</kbd>+<kbd>D</kbd></span> or by executing</p>
+</div>
+<div class="listingblock execute">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-shell hljs" data-lang="shell">exit</code></pre>
+</div>
+</div>
+</div>
+</div>
+</article>
+<aside class="toc sidebar" data-title="Contents" data-levels="2">
+  <div class="toc-menu"></div>
+</aside>
+  </div>
+</main>
+</div>
+<footer class="footer">
+  <p>This page was built using the Antora default UI.</p>
+  <p>The source code for this UI is licensed under the terms of the MPL-2.0 license.</p>
+</footer>
+<script src="../../_/js/site.js"></script>
+<script async src="../../_/js/vendor/highlight.js"></script>
+  </body>
+</html>

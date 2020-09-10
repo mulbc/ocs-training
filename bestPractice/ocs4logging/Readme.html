@@ -1,0 +1,528 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Lab: Deploying OpenShift Cluster Logging backed by OpenShift Container Storage :: OCS Training</title>
+    <link rel="canonical" href="https://mulbc.github.io/ocs-training/bestPractice/ocs4logging/Readme.html">
+    <meta name="generator" content="Antora 2.3.3">
+    <link rel="stylesheet" href="../../_/css/site.css">
+  </head>
+  <body class="article">
+<header class="header">
+  <nav class="navbar">
+    <div class="navbar-brand">
+      <a class="navbar-item" href="https://mulbc.github.io/ocs-training">OCS Training</a>
+      <button class="navbar-burger" data-target="topbar-nav">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+    </div>
+    <div id="topbar-nav" class="navbar-menu">
+      <div class="navbar-end">
+        <a class="navbar-item" href="#">Home</a>
+        <div class="navbar-item has-dropdown is-hoverable">
+          <a class="navbar-link" href="#">Products</a>
+          <div class="navbar-dropdown">
+            <a class="navbar-item" href="#">Product A</a>
+            <a class="navbar-item" href="#">Product B</a>
+            <a class="navbar-item" href="#">Product C</a>
+          </div>
+        </div>
+        <div class="navbar-item has-dropdown is-hoverable">
+          <a class="navbar-link" href="#">Services</a>
+          <div class="navbar-dropdown">
+            <a class="navbar-item" href="#">Service A</a>
+            <a class="navbar-item" href="#">Service B</a>
+            <a class="navbar-item" href="#">Service C</a>
+          </div>
+        </div>
+        <div class="navbar-item has-dropdown is-hoverable">
+          <a class="navbar-link" href="#">Resources</a>
+          <div class="navbar-dropdown">
+            <a class="navbar-item" href="#">Resource A</a>
+            <a class="navbar-item" href="#">Resource B</a>
+            <a class="navbar-item" href="#">Resource C</a>
+          </div>
+        </div>
+        <div class="navbar-item">
+          <span class="control">
+            <a class="button is-primary" href="#">Download</a>
+          </span>
+        </div>
+      </div>
+    </div>
+  </nav>
+</header>
+<div class="body">
+<div class="nav-container" data-component="bestPractice" data-version="master">
+  <aside class="nav">
+    <div class="panels">
+<div class="nav-panel-menu is-active" data-panel="menu">
+  <nav class="nav-menu">
+    <h3 class="title"><a href="../index.html">OCS Best Practices</a></h3>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../index.html">Overview</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../ocs4jenkins/Jenkins.html">Jenkins with OCS4</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../ocs4kafka/Readme.html">Kafka with OCS4</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item is-current-page" data-depth="1">
+    <a class="nav-link" href="Readme.html">Openshift Logging with OCS4</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../ocs4metrics/Readme.html">Openshift Metrics with OCS4</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../ocs4postgresql/PostgreSQL.html">PostgreSQL with OCS4</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../ocs4registry/registry.html">Openshift registry with OCS4</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </nav>
+</div>
+<div class="nav-panel-explore" data-panel="explore">
+  <div class="context">
+    <span class="title">OCS Best Practices</span>
+    <span class="version">master</span>
+  </div>
+  <ul class="components">
+    <li class="component is-current">
+      <span class="title">OCS Best Practices</span>
+      <ul class="versions">
+        <li class="version is-current is-latest">
+          <a href="../index.html">master</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <span class="title">OCS Installation and Configuration</span>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../install&configure/index.html">master</a>
+        </li>
+      </ul>
+    </li>
+  </ul>
+</div>
+    </div>
+  </aside>
+</div>
+<main class="article">
+<div class="toolbar" role="navigation">
+<button class="nav-toggle"></button>
+  <a href="../../install&configure/index.html" class="home-link"></a>
+<nav class="breadcrumbs" aria-label="breadcrumbs">
+  <ul>
+    <li><a href="../index.html">OCS Best Practices</a></li>
+    <li><a href="Readme.html">Openshift Logging with OCS4</a></li>
+  </ul>
+</nav>
+  <div class="edit-this-page"><a href="https://github.com/mulbc/ocs-training/edit/master/bestPractice/modules/ocs4logging/pages/Readme.adoc">Edit this Page</a></div>
+  </div>
+  <div class="content">
+<article class="doc">
+<h1 class="page">Lab: Deploying OpenShift Cluster Logging backed by OpenShift Container Storage</h1>
+<div id="toc" class="toc">
+<div id="toctitle">Table of Contents</div>
+<ul class="sectlevel1">
+<li><a href="#_lab_overview">1. Lab Overview</a>
+<ul class="sectlevel2">
+<li><a href="#_in_this_lab_you_will_learn">1.1. In this lab you will learn</a></li>
+</ul>
+</li>
+<li><a href="#_introduction">2. Introduction</a></li>
+<li><a href="#_deploying_cluster_logging">3. Deploying Cluster Logging</a>
+<ul class="sectlevel2">
+<li><a href="#_setup_operators">3.1. Setup Operators</a></li>
+<li><a href="#_creating_a_cluster_logging_instance">3.2. Creating a Cluster Logging Instance</a></li>
+</ul>
+</li>
+<li><a href="#_deploying_the_event_router">4. Deploying the Event Router</a></li>
+<li><a href="#_inspect_logs_with_kibana">5. Inspect logs with Kibana</a></li>
+<li><a href="#_summary">6. Summary</a></li>
+</ul>
+</div>
+<div class="sect1">
+<h2 id="_lab_overview"><a class="anchor" href="#_lab_overview"></a>1. Lab Overview</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>In this lab, you will be deploying OpenShift Cluster Logging to an OpenShift cluster. Cluster logging increases the observability and operational experience for applications running in OpenShift.</p>
+</div>
+<div class="sect2">
+<h3 id="_in_this_lab_you_will_learn"><a class="anchor" href="#_in_this_lab_you_will_learn"></a>1.1. In this lab you will learn</h3>
+<div class="ulist">
+<ul>
+<li>
+<p>OpenShift Cluster Logging components and architecture</p>
+</li>
+<li>
+<p>Redundancy configuration options, and which to use with OCS</p>
+</li>
+<li>
+<p>Deploying Cluster Logging</p>
+</li>
+<li>
+<p>Deploying Event Router</p>
+</li>
+<li>
+<p>Inspect logs with Kibana</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_introduction"><a class="anchor" href="#_introduction"></a>2. Introduction</h2>
+<div class="sectionbody">
+<div class="imageblock">
+<div class="content">
+<img src="_images/imgs/image-01.png" alt="Components - Operator" width="Elasticsearch">
+</div>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="_images/imgs/image-02.png" alt="Components - Fluentd" width="Kibana">
+</div>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="_images/imgs/image-03.png" alt="Components - Event Router">
+</div>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="_images/imgs/image-04.png" alt="Cluster Logging - Architecture">
+</div>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="_images/imgs/image-05.png" alt="Redundancy - Zero">
+</div>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="_images/imgs/image-06.png" alt="Redundancy - Single">
+</div>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="_images/imgs/image-07.png" alt="Redundancy - Multiple">
+</div>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="_images/imgs/image-08.png" alt="Redundancy - Full">
+</div>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="_images/imgs/image-09.png" alt="Redundancy - OCS">
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_deploying_cluster_logging"><a class="anchor" href="#_deploying_cluster_logging"></a>3. Deploying Cluster Logging</h2>
+<div class="sectionbody">
+<div class="sect2">
+<h3 id="_setup_operators"><a class="anchor" href="#_setup_operators"></a>3.1. Setup Operators</h3>
+<div class="paragraph">
+<p>Before we install the Logging operator, we need to setup several namespaces, subscribe to the Elasticsearch operator, and setup RBAC policies. This is all handled by the <code>logging-init.yaml</code> file.</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Submit <code>logging-init.yaml</code> file</p>
+</li>
+</ul>
+</div>
+<div class="listingblock execute">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc create -f https://raw.githubusercontent.com/red-hat-storage/ocs-training/master/ocs4logging/logging-init.yaml</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Once submitted, then we can use the OpenShift Console to install the Cluster Logging operator from the catalog.</p>
+</div>
+<div class="paragraph">
+<p><span class="image"><img src="_images/imgs/image-21.png" alt="OperatorHub - Search"></span>
+<span class="image"><img src="_images/imgs/image-22.png" alt="Cluster Logging - Install"></span>
+<span class="image"><img src="_images/imgs/image-23.png" alt="Cluster Logging - Subscribe"></span></p>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+Make sure to modify the namespace to openshift-logging!
+</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>After the Cluster Logging operator subscription has been configured, return to the console to verify that both the Cluster Logging and Elasticsearch operators reach the <code>Running</code> state.</p>
+</div>
+<div class="listingblock execute">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc get pods -n openshift-logging</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>The output should look something like this:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre>NAME                                        READY   STATUS    RESTARTS   AGE
+cluster-logging-operator-64967c849b-w68sh   1/1     Running   0          108s</pre>
+</div>
+</div>
+<div class="listingblock execute">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc get pods -n openshift-operators-redhat</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>The output should look something like this:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre>NAME                                      READY   STATUS    RESTARTS   AGE
+elasticsearch-operator-5979dddc8f-gb69w   1/1     Running   0          4m6s</pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_creating_a_cluster_logging_instance"><a class="anchor" href="#_creating_a_cluster_logging_instance"></a>3.2. Creating a Cluster Logging Instance</h3>
+<div class="paragraph">
+<p>The next step is to create a <code>ClusterLogging</code> custom resource. The two important parameters</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><code>storageClassName: ocs-storagecluster-ceph-rbd</code></p>
+</li>
+<li>
+<p><code>redundancyPolicy: ZeroRedundancy</code></p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>This example CR will result in Elasticsearch indexes being sharded across all Elasticsearch instances, and stored on OpenShift Container Storage RWO Persistent Volumes (RBD). The amount of replication will not change if the number of Elasticsearch instances is scaled, which would not be the case with <code>Multiple</code>  or <code>Full</code> redundancy policies.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-yaml hljs" data-lang="yaml">apiVersion: "logging.openshift.io/v1"
+kind: "ClusterLogging"
+metadata:
+  name: "instance"
+  namespace: "openshift-logging"
+spec:
+  managementState: "Managed"
+  logStore:
+    type: "elasticsearch"
+    elasticsearch:
+      nodeCount: 3
+      storage:
+        storageClassName: ocs-storagecluster-ceph-rbd
+        size: 200G
+      redundancyPolicy: "ZeroRedundancy"
+  visualization:
+    type: "kibana"
+    kibana:
+      replicas: 1
+  curation:
+    type: "curator"
+    curator:
+      schedule: "30 3 * * *"
+  collection:
+    logs:
+      type: "fluentd"
+      fluentd: {}</code></pre>
+</div>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Submit <code>logging-cr.yaml</code> file</p>
+</li>
+</ul>
+</div>
+<div class="listingblock execute">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc create -f https://raw.githubusercontent.com/red-hat-storage/ocs-training/master/ocs4logging/logging-cr.yaml</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Verify all the components come online properly.</p>
+</div>
+<div class="listingblock execute">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">watch oc get pods -n openshift-logging</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>The output should detail the following pods, and they should all reach the Running state:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre>NAME                                            READY   STATUS    RESTARTS   AGE
+cluster-logging-operator-64967c849b-w68sh       1/1     Running   0          37m
+elasticsearch-cdm-wedgisnx-1-769b67bdfb-c6nkj   2/2     Running   0          20m
+elasticsearch-cdm-wedgisnx-2-99cd5d7b8-jrkjj    2/2     Running   0          19m
+elasticsearch-cdm-wedgisnx-3-66f7469f66-vvmcl   2/2     Running   0          18m
+fluentd-4pt84                                   1/1     Running   0          20m
+fluentd-crl2n                                   1/1     Running   0          20m
+fluentd-fkxnc                                   1/1     Running   0          20m
+fluentd-kv9qq                                   1/1     Running   0          20m
+fluentd-r6ptj                                   1/1     Running   0          20m
+fluentd-xkb6s                                   1/1     Running   0          20m
+kibana-56bcf46446-f6z6x                         2/2     Running   0          20m</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Furthermore, verify that the Elasticsearch pod are utilizing OCS by examining the PVs</p>
+</div>
+<div class="listingblock execute">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc get pv | grep elasticsearch</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>The output should show <code>ocs-storagecluster-ceph-rbd</code> as the storage class for all three of the Elasticsearch persistent volumes.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre>pvc-603e200d-006f-11ea-ba33-02eab89269b1   187Gi      RWO            Delete           Bound    openshift-logging/elasticsearch-elasticsearch-cdm-wedgisnx-1   ocs-storagecluster-ceph-rbd            22m
+pvc-604229fa-006f-11ea-ba33-02eab89269b1   187Gi      RWO            Delete           Bound    openshift-logging/elasticsearch-elasticsearch-cdm-wedgisnx-2   ocs-storagecluster-ceph-rbd            22m
+pvc-60437864-006f-11ea-ba33-02eab89269b1   187Gi      RWO            Delete           Bound    openshift-logging/elasticsearch-elasticsearch-cdm-wedgisnx-3   ocs-storagecluster-ceph-rbd            22m</pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_deploying_the_event_router"><a class="anchor" href="#_deploying_the_event_router"></a>4. Deploying the Event Router</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>The Event Router ensures that OpenShift Events make their way into the Cluster Logging infrastructure. This can be useful for operational teams better understand what is going on in their environment. First we will use the <code>event-router.yaml</code> example template, process it, and apply it to the cluster.</p>
+</div>
+<div class="listingblock execute">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc process -f https://raw.githubusercontent.com/red-hat-storage/ocs-training/master/ocs4logging/event-router.yaml | oc apply -f -</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Validate that the Event Router installed:</p>
+</div>
+<div class="listingblock execute">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc logs $(oc get pods --selector component=eventrouter -o name -n openshift-logging) -n openshift-logging</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>The event router deployment is now complete!</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_inspect_logs_with_kibana"><a class="anchor" href="#_inspect_logs_with_kibana"></a>5. Inspect logs with Kibana</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Use the following command to retrieve the web URI for the Kibana dashboard:</p>
+</div>
+<div class="listingblock execute">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc get -n openshift-logging route kibana</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre>NAME     HOST/PORT                                                                     PATH   SERVICES   PORT    TERMINATION          WILDCARD
+kibana   kibana-openshift-logging.apps.cluster-lax-8763.lax-8763.example.opentlc.com          kibana     &lt;all&gt;   reencrypt/Redirect   None</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Once you open the dashboard in a browser, you will need to authorize access. Once in you can do an example search by typing in <code>noobaa</code>  in the search bar. Doing so will load the relevant log messages for the the Noobaa component of OCS. Not only is Cluster Logging consuming OpenShift Container Storage, but Cluster Logging can be used to gain additional operational visibility into OpenShift Container Storage!</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="_images/imgs/image-31.png" alt="Kibana - Authorize Access">
+</div>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="_images/imgs/image-32.png" alt="Kibana - Main Page">
+</div>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="_images/imgs/image-33.png" alt="Kibana - Search For Example Logs">
+</div>
+</div>
+<div class="paragraph">
+<p>You can search with Query DSL with a few condtions as follows.
+kubernetes.namespace_name: "openshift-storage" AND kubernetes.labels.app: "noobaa" AND message: "ERROR: "</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_summary"><a class="anchor" href="#_summary"></a>6. Summary</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>By this point you have successfully added Cluster Logging to your OpenShift environment, and done so in such a way that it will benefit from all the persistent goodness that comes from OpenShift Container Storage. You&#8217;ve also configured the Event Router to collect Kubernetes events and foward them to your freshly setup Cluster Logging infrastructure. Finally, you were able to use the Kibana dashboard to search for logs for one of the OpenShift Container Storage pods!</p>
+</div>
+</div>
+</div>
+</article>
+<aside class="toc sidebar" data-title="Contents" data-levels="2">
+  <div class="toc-menu"></div>
+</aside>
+  </div>
+</main>
+</div>
+<footer class="footer">
+  <p>This page was built using the Antora default UI.</p>
+  <p>The source code for this UI is licensed under the terms of the MPL-2.0 license.</p>
+</footer>
+<script src="../../_/js/site.js"></script>
+<script async src="../../_/js/vendor/highlight.js"></script>
+  </body>
+</html>

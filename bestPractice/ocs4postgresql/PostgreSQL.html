@@ -1,0 +1,504 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Lab: Deploying and using PostgreSQL with OCS4 :: OCS Training</title>
+    <link rel="canonical" href="https://mulbc.github.io/ocs-training/bestPractice/ocs4postgresql/PostgreSQL.html">
+    <meta name="generator" content="Antora 2.3.3">
+    <link rel="stylesheet" href="../../_/css/site.css">
+  </head>
+  <body class="article">
+<header class="header">
+  <nav class="navbar">
+    <div class="navbar-brand">
+      <a class="navbar-item" href="https://mulbc.github.io/ocs-training">OCS Training</a>
+      <button class="navbar-burger" data-target="topbar-nav">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+    </div>
+    <div id="topbar-nav" class="navbar-menu">
+      <div class="navbar-end">
+        <a class="navbar-item" href="#">Home</a>
+        <div class="navbar-item has-dropdown is-hoverable">
+          <a class="navbar-link" href="#">Products</a>
+          <div class="navbar-dropdown">
+            <a class="navbar-item" href="#">Product A</a>
+            <a class="navbar-item" href="#">Product B</a>
+            <a class="navbar-item" href="#">Product C</a>
+          </div>
+        </div>
+        <div class="navbar-item has-dropdown is-hoverable">
+          <a class="navbar-link" href="#">Services</a>
+          <div class="navbar-dropdown">
+            <a class="navbar-item" href="#">Service A</a>
+            <a class="navbar-item" href="#">Service B</a>
+            <a class="navbar-item" href="#">Service C</a>
+          </div>
+        </div>
+        <div class="navbar-item has-dropdown is-hoverable">
+          <a class="navbar-link" href="#">Resources</a>
+          <div class="navbar-dropdown">
+            <a class="navbar-item" href="#">Resource A</a>
+            <a class="navbar-item" href="#">Resource B</a>
+            <a class="navbar-item" href="#">Resource C</a>
+          </div>
+        </div>
+        <div class="navbar-item">
+          <span class="control">
+            <a class="button is-primary" href="#">Download</a>
+          </span>
+        </div>
+      </div>
+    </div>
+  </nav>
+</header>
+<div class="body">
+<div class="nav-container" data-component="bestPractice" data-version="master">
+  <aside class="nav">
+    <div class="panels">
+<div class="nav-panel-menu is-active" data-panel="menu">
+  <nav class="nav-menu">
+    <h3 class="title"><a href="../index.html">OCS Best Practices</a></h3>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../index.html">Overview</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../ocs4jenkins/Jenkins.html">Jenkins with OCS4</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../ocs4kafka/Readme.html">Kafka with OCS4</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../ocs4logging/Readme.html">Openshift Logging with OCS4</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../ocs4metrics/Readme.html">Openshift Metrics with OCS4</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item is-current-page" data-depth="1">
+    <a class="nav-link" href="PostgreSQL.html">PostgreSQL with OCS4</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../ocs4registry/registry.html">Openshift registry with OCS4</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </nav>
+</div>
+<div class="nav-panel-explore" data-panel="explore">
+  <div class="context">
+    <span class="title">OCS Best Practices</span>
+    <span class="version">master</span>
+  </div>
+  <ul class="components">
+    <li class="component is-current">
+      <span class="title">OCS Best Practices</span>
+      <ul class="versions">
+        <li class="version is-current is-latest">
+          <a href="../index.html">master</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <span class="title">OCS Installation and Configuration</span>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../install&configure/index.html">master</a>
+        </li>
+      </ul>
+    </li>
+  </ul>
+</div>
+    </div>
+  </aside>
+</div>
+<main class="article">
+<div class="toolbar" role="navigation">
+<button class="nav-toggle"></button>
+  <a href="../../install&configure/index.html" class="home-link"></a>
+<nav class="breadcrumbs" aria-label="breadcrumbs">
+  <ul>
+    <li><a href="../index.html">OCS Best Practices</a></li>
+    <li><a href="PostgreSQL.html">PostgreSQL with OCS4</a></li>
+  </ul>
+</nav>
+  <div class="edit-this-page"><a href="https://github.com/mulbc/ocs-training/edit/master/bestPractice/modules/ocs4postgresql/pages/PostgreSQL.adoc">Edit this Page</a></div>
+  </div>
+  <div class="content">
+<article class="doc">
+<h1 class="page">Lab: Deploying and using PostgreSQL with OCS4</h1>
+<div id="toc" class="toc">
+<div id="toctitle">Table of Contents</div>
+<ul class="sectlevel1">
+<li><a href="#_lab_overview">1. Lab Overview</a>
+<ul class="sectlevel2">
+<li><a href="#_in_this_lab_you_will_learn_how_to">1.1. In this lab you will learn how to:</a></li>
+</ul>
+</li>
+<li><a href="#_prerequisites">2. Prerequisites:</a></li>
+<li><a href="#_deploying_postgresql">3. Deploying PostgreSQL</a>
+<ul class="sectlevel2">
+<li><a href="#_our_postgresql_demo">3.1. Our PostgreSQL demo</a></li>
+<li><a href="#_creating_a_postgresql_template_that_uses_openshift_container_storage_4">3.2. Creating a PostgreSQL template that uses OpenShift Container Storage 4</a></li>
+<li><a href="#_creating_our_project">3.3. Creating our project</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="sect1">
+<h2 id="_lab_overview"><a class="anchor" href="#_lab_overview"></a>1. Lab Overview</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>PostgreSQL have been in the last few years the fastest growing open source RDBMS from market perspective. It will probably suppress MySQL at some point in the future in terms of market share. It has a solid community and have been around for many years adding more and more features.
+PostgreSQL features ACID ((Atomicity, Consistent, Isolation and Durability) properties. It has indexes (primary/unique), updatable views, triggers, foreign keys (FKs) and even stored procedures (SPs)
+PostgreSQL also features built-in replication via shipping WAL (Write Ahead Log) to a number of  different database replicas. These replicas are in can be used in read-only mode. It also have a synchronous replication, where the master waits for at least one replica have written the data before ACKing.</p>
+</div>
+<div class="sect2">
+<h3 id="_in_this_lab_you_will_learn_how_to"><a class="anchor" href="#_in_this_lab_you_will_learn_how_to"></a>1.1. In this lab you will learn how to:</h3>
+<div class="ulist">
+<ul>
+<li>
+<p>Create a PostgreSQL template that uses OpenShift Container Storage 4 persistent storage and learn about the template variables.</p>
+</li>
+<li>
+<p>Deploy a PostgreSQL via "oc new-app" using our new template</p>
+</li>
+<li>
+<p>Learn about pgbench basics and deploy a pgbench container</p>
+</li>
+<li>
+<p>Run performance testing to measure the performance of your database</p>
+</li>
+<li>
+<p>How to do all this from the command line :)</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_prerequisites"><a class="anchor" href="#_prerequisites"></a>2. Prerequisites:</h2>
+<div class="sectionbody">
+<div class="ulist">
+<ul>
+<li>
+<p>Make sure you have a running OCP cluster based on the RHPDS <code>OpenShift 4.2 Workshop</code></p>
+</li>
+<li>
+<p>a copy of this git repo</p>
+</li>
+<li>
+<p><strong>NOTE</strong>: The scripts in this lab will work on Linux (various distributions) and MacOS. They are not tested on any Windows OS.</p>
+</li>
+<li>
+<p>Please git clone our repository, you&#8217;ll find all the scripts needed in the ocs4postgresql directory:</p>
+</li>
+</ul>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre>git clone https://github.com/red-hat-storage/ocs-training.git</pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_deploying_postgresql"><a class="anchor" href="#_deploying_postgresql"></a>3. Deploying PostgreSQL</h2>
+<div class="sectionbody">
+<div class="sect2">
+<h3 id="_our_postgresql_demo"><a class="anchor" href="#_our_postgresql_demo"></a>3.1. Our PostgreSQL demo</h3>
+<div class="paragraph">
+<p>This demo will deploy a PostgreSQL database that will use OCS4 persistent storage and then run pgbench on the newly deployed database.
+pgbench is maintained together with PostgreSQL. it is used to create data and also to stress the database. It has many options and variations, we are going to use the default workload scenario which is loosely based on TCP-B (a more write oriented workload).
+We will also learn about the pgbench output.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_creating_a_postgresql_template_that_uses_openshift_container_storage_4"><a class="anchor" href="#_creating_a_postgresql_template_that_uses_openshift_container_storage_4"></a>3.2. Creating a PostgreSQL template that uses OpenShift Container Storage 4</h3>
+<div class="paragraph">
+<p>OCP4 comes preconfigured with two PostgreSQL templates to use:</p>
+</div>
+<div class="listingblock execute">
+<div class="content">
+<pre class="highlightjs highlight"><code>oc get templates -n openshift -o custom-columns=NAME:.metadata.name|grep -i ^postgres</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="title">Example output:</div>
+<div class="content">
+<pre>postgresql-ephemeral
+postgresql-persistent</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>We are going to create a new template based on the postgresql-persistent template, to do so, we are going to run the <strong>create_ocs_postgresql_template</strong> script.<br>
+The script parameters (CSI_DRIVER, PV_SIZE and NEW_TEMPLATE_NAME) are self explanatory, you can edit the script and change them but remember that going forward, some sections might reference the default value of NEW_TEMPLATE_NAME. The script will perform the following tasks:</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Change the name of the template (so it can co-exists with the one we copied from).</p>
+</li>
+<li>
+<p>Add the storage class (sc) we want to use in the template (the postgresql-persistent template just uses the default storage class in OCP).</p>
+</li>
+<li>
+<p>Add/change the size of the PV we want for the PostgreSQL database.</p>
+</li>
+<li>
+<p>Run the "oc create" command and the create the new template</p>
+</li>
+</ol>
+</div>
+<div class="paragraph">
+<p>Run the create_ocs_postgresql_template script:</p>
+</div>
+<div class="listingblock execute">
+<div class="content">
+<pre class="highlightjs highlight"><code>$ bash create_ocs_postgresql_template</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>After running the script, you should see another postgresql template:</p>
+</div>
+<div class="listingblock execute">
+<div class="content">
+<pre class="highlightjs highlight"><code>oc get templates -n openshift -o custom-columns=NAME:.metadata.name|grep -i ^postgresql</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="title">Example output:</div>
+<div class="content">
+<pre>postgresql-ephemeral
+postgresql-persistent
+postgresql-persistent-ocs</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>The last postgresql template <strong>postgresql-persistent-ocs</strong> is the one that we are going to use.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_creating_our_project"><a class="anchor" href="#_creating_our_project"></a>3.3. Creating our project</h3>
+<div class="paragraph">
+<p>lets create a project that will run our demo:</p>
+</div>
+<div class="listingblock execute">
+<div class="content">
+<pre class="highlightjs highlight"><code>oc new-project my-postgresql</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Once the project is created (oc will automatically use it), lets create postgresql database:</p>
+</div>
+<div class="listingblock execute">
+<div class="content">
+<pre class="highlightjs highlight"><code>oc new-app --name=postgresql --template=postgresql-persistent-ocs</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Pay good attention to the output of the "new-app" command, especially to the section below "* With parameters:" as it contains the randomly created username ("PostgreSQL Connection Username=") and password ("PostgreSQL Connection Username") to connect to the database, for example:</p>
+</div>
+<div class="listingblock bash">
+<div class="content">
+<pre class="highlightjs highlight"><code>     * With parameters:
+        * Memory Limit=512Mi
+        * Namespace=openshift
+        * Database Service Name=postgresql
+        * PostgreSQL Connection Username=user8CK # generated
+        * PostgreSQL Connection Password=DmoXvvuh6PetIG5V # generated
+        * PostgreSQL Database Name=sampledb
+        * Volume Capacity=50Gi
+        * Version of PostgreSQL Image=10</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>You can monitor the creation of the PostgreSQL pod using "oc get pods" and you can see that two pods are being created, a sidecar named postgresql-&lt;some_number&gt;-deploy, and the actual pod running the database named, postgresql-&lt;some_number&gt;-&lt;random_pod_identifier&gt;.<br>
+The output should similar to this:</p>
+</div>
+<div class="listingblock bash">
+<div class="content">
+<pre class="highlightjs highlight"><code>$ oc get pods
+NAME                  READY   STATUS      RESTARTS   AGE
+postgresql-1-deploy   0/1     Completed   0          65s
+postgresql-1-ptcdm    1/1     Running     0          57s</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>So once the PostgreSQL pods is running and ready (in the above output the name is "postgresql-1-ptcdm"), we have a running database.
+Now we can create a pod that will contain pgbench, to do so we will use a container I&#8217;ve created and used for all my PostgreSQL tests.<br>
+The yaml file looks like this:</p>
+</div>
+<div class="listingblock yaml">
+<div class="content">
+<pre class="highlightjs highlight"><code>apiVersion: v1
+kind: Pod
+metadata:
+  labels:
+    name: pgbench
+  name: pgbench
+spec:
+  containers:
+    - image: quay.io/sagyvolkov/pgbench-container:0.1
+      imagePullPolicy: IfNotPresent
+      name: pgbench-pod
+      resources: {}
+      securityContext:
+        capabilities: {}
+        privileged: false
+      terminationMessagePath: /dev/termination-log
+  dnsPolicy: Default
+  restartPolicy: OnFailure
+  serviceAccount: ""
+status: {}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>You can copy/paste this yaml to a file (lets call it pgbench.yaml) and then run:</p>
+</div>
+<div class="listingblock execute">
+<div class="content">
+<pre class="highlightjs highlight"><code>oc -n my-postgresql apply -f pgbench.yaml</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Once the pgbench pod is up, lets make sure we can connect to our PostgreSQL database.<br>
+First we need the username and password that the "oc new-app" command output have returned. We also need the service IP address that was created when we ran "oc new-app". To get the service IP, run:</p>
+</div>
+<div class="listingblock execute">
+<div class="content">
+<pre class="highlightjs highlight"><code>oc get svc -o custom-columns=CLUSTER-IP:.spec.clusterIP</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>now that we have all the information to test connectivity, we can rsh into the pgbench pod:</p>
+</div>
+<div class="listingblock execute">
+<div class="content">
+<pre class="highlightjs highlight"><code>oc rsh pgbench</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>and then once inside the pod, run: psql -U &lt;our new-app username&gt; -h &lt;the clusterIP&gt; sampledb<br>
+for example:</p>
+</div>
+<div class="listingblock execute">
+<div class="content">
+<pre class="highlightjs highlight"><code>psql -U user8CK -h 172.30.126.152 sampledb</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Once you can see that you can login to the sampledb database, just type "exit" to leave psql.<br>
+Now we can load data via pgbench. The pgbench container holds a wrapper script to run pgbench (as I wrote, this container is used for performance testing). It is out of the scope of this lab to go over all the parameters of the "run_pgbench" script, but feel free to "cat" the script once you rsh to the pgbench pod or contact me after the lab<br>
+lets load our data, the command will be (again, this is running from within the pgbench pod):
+./run_pgbench init &lt;our clusterIP&gt; &lt;our username&gt; 10 1 1 simple time 60 yes no &lt;our password&gt; sampledb 10<br>
+NOTE: Please leave the parameters that are not enclosed with &lt;&gt; as they are.<br>
+for example:</p>
+</div>
+<div class="listingblock execute">
+<div class="content">
+<pre class="highlightjs highlight"><code>./run_pgbench init 172.30.126.152 user8CK 10 1 1 simple time 60 yes no DmoXvvuh6PetIG5V sampledb 5</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>One of the parameters in this script is the scale factor of the data, in this case it is set to 10 (4th parameter) which will create a very small database, you can use a much larger scale factor to create bigger database (for example, a scale factor of 5350 is about 75GB in database size).
+When the load is done, we can now use the same script to run the workload:</p>
+</div>
+<div class="listingblock execute">
+<div class="content">
+<pre class="highlightjs highlight"><code>./run_pgbench workload 172.30.126.152 user8CK 10 1 1 simple time 60 yes no DmoXvvuh6PetIG5V sampledb 5</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>With these variables used by the run_pgbench we are going to run pgbench for 60 seconds, using a 2 threads and 2 jobs and the output will be sampled every 5 seconds.<br>
+The output will be similar to this:</p>
+</div>
+<div class="listingblock execute">
+<div class="content">
+<pre class="highlightjs highlight"><code>Running pgbench workload ...
+starting vacuum...end.
+progress: 5.0 s, 589.6 tps, lat 3.390 ms stddev 2.279
+progress: 10.0 s, 613.2 tps, lat 3.261 ms stddev 2.026
+progress: 15.0 s, 623.6 tps, lat 3.207 ms stddev 2.399
+progress: 20.0 s, 624.2 tps, lat 3.204 ms stddev 4.685
+progress: 25.0 s, 690.2 tps, lat 2.898 ms stddev 1.555
+progress: 30.0 s, 681.8 tps, lat 2.933 ms stddev 2.599
+progress: 35.0 s, 632.4 tps, lat 3.141 ms stddev 7.810
+progress: 40.0 s, 628.4 tps, lat 3.204 ms stddev 5.069
+progress: 45.0 s, 568.6 tps, lat 3.517 ms stddev 3.696
+progress: 50.0 s, 601.8 tps, lat 3.323 ms stddev 2.555
+progress: 55.0 s, 583.4 tps, lat 3.429 ms stddev 3.358
+progress: 60.0 s, 623.0 tps, lat 3.211 ms stddev 1.025
+transaction type: &lt;builtin: simple update&gt;
+scaling factor: 10
+query mode: simple
+number of clients: 2
+number of threads: 2
+duration: 60 s
+number of transactions actually processed: 37303
+latency average = 3.217 ms
+latency stddev = 3.716 ms
+tps = 621.691291 (including connections establishing)
+tps = 621.719866 (excluding connections establishing)
+END-PGBENCH-WORKLOAD
+
+real 1m0.026s
+user 0m0.482s
+sys 0m2.045s</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>What we can see here is that we achieved 37303 transactions during out 60 seconds test with an average tps (transaction per seconds) of roughly 621 and latency average 3.217 ms.</p>
+</div>
+<div class="paragraph">
+<p>As previously stated, you can play with parameters of the run_pgbench script to run a heavier, longer workload or to create a bigger database.</p>
+</div>
+</div>
+</div>
+</div>
+</article>
+<aside class="toc sidebar" data-title="Contents" data-levels="2">
+  <div class="toc-menu"></div>
+</aside>
+  </div>
+</main>
+</div>
+<footer class="footer">
+  <p>This page was built using the Antora default UI.</p>
+  <p>The source code for this UI is licensed under the terms of the MPL-2.0 license.</p>
+</footer>
+<script src="../../_/js/site.js"></script>
+<script async src="../../_/js/vendor/highlight.js"></script>
+  </body>
+</html>

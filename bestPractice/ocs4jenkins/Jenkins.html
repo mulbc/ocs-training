@@ -1,0 +1,589 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Lab: Deploying and using Jenkins pipelines with OCS4. :: OCS Training</title>
+    <link rel="canonical" href="https://mulbc.github.io/ocs-training/bestPractice/ocs4jenkins/Jenkins.html">
+    <meta name="generator" content="Antora 2.3.3">
+    <link rel="stylesheet" href="../../_/css/site.css">
+  </head>
+  <body class="article">
+<header class="header">
+  <nav class="navbar">
+    <div class="navbar-brand">
+      <a class="navbar-item" href="https://mulbc.github.io/ocs-training">OCS Training</a>
+      <button class="navbar-burger" data-target="topbar-nav">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+    </div>
+    <div id="topbar-nav" class="navbar-menu">
+      <div class="navbar-end">
+        <a class="navbar-item" href="#">Home</a>
+        <div class="navbar-item has-dropdown is-hoverable">
+          <a class="navbar-link" href="#">Products</a>
+          <div class="navbar-dropdown">
+            <a class="navbar-item" href="#">Product A</a>
+            <a class="navbar-item" href="#">Product B</a>
+            <a class="navbar-item" href="#">Product C</a>
+          </div>
+        </div>
+        <div class="navbar-item has-dropdown is-hoverable">
+          <a class="navbar-link" href="#">Services</a>
+          <div class="navbar-dropdown">
+            <a class="navbar-item" href="#">Service A</a>
+            <a class="navbar-item" href="#">Service B</a>
+            <a class="navbar-item" href="#">Service C</a>
+          </div>
+        </div>
+        <div class="navbar-item has-dropdown is-hoverable">
+          <a class="navbar-link" href="#">Resources</a>
+          <div class="navbar-dropdown">
+            <a class="navbar-item" href="#">Resource A</a>
+            <a class="navbar-item" href="#">Resource B</a>
+            <a class="navbar-item" href="#">Resource C</a>
+          </div>
+        </div>
+        <div class="navbar-item">
+          <span class="control">
+            <a class="button is-primary" href="#">Download</a>
+          </span>
+        </div>
+      </div>
+    </div>
+  </nav>
+</header>
+<div class="body">
+<div class="nav-container" data-component="bestPractice" data-version="master">
+  <aside class="nav">
+    <div class="panels">
+<div class="nav-panel-menu is-active" data-panel="menu">
+  <nav class="nav-menu">
+    <h3 class="title"><a href="../index.html">OCS Best Practices</a></h3>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../index.html">Overview</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item is-current-page" data-depth="1">
+    <a class="nav-link" href="Jenkins.html">Jenkins with OCS4</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../ocs4kafka/Readme.html">Kafka with OCS4</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../ocs4logging/Readme.html">Openshift Logging with OCS4</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../ocs4metrics/Readme.html">Openshift Metrics with OCS4</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../ocs4postgresql/PostgreSQL.html">PostgreSQL with OCS4</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../ocs4registry/registry.html">Openshift registry with OCS4</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </nav>
+</div>
+<div class="nav-panel-explore" data-panel="explore">
+  <div class="context">
+    <span class="title">OCS Best Practices</span>
+    <span class="version">master</span>
+  </div>
+  <ul class="components">
+    <li class="component is-current">
+      <span class="title">OCS Best Practices</span>
+      <ul class="versions">
+        <li class="version is-current is-latest">
+          <a href="../index.html">master</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <span class="title">OCS Installation and Configuration</span>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../install&configure/index.html">master</a>
+        </li>
+      </ul>
+    </li>
+  </ul>
+</div>
+    </div>
+  </aside>
+</div>
+<main class="article">
+<div class="toolbar" role="navigation">
+<button class="nav-toggle"></button>
+  <a href="../../install&configure/index.html" class="home-link"></a>
+<nav class="breadcrumbs" aria-label="breadcrumbs">
+  <ul>
+    <li><a href="../index.html">OCS Best Practices</a></li>
+    <li><a href="Jenkins.html">Jenkins with OCS4</a></li>
+  </ul>
+</nav>
+  <div class="edit-this-page"><a href="https://github.com/mulbc/ocs-training/edit/master/bestPractice/modules/ocs4jenkins/pages/Jenkins.adoc">Edit this Page</a></div>
+  </div>
+  <div class="content">
+<article class="doc">
+<h1 class="page">Lab: Deploying and using Jenkins pipelines with OCS4.</h1>
+<div id="toc" class="toc">
+<div id="toctitle">Table of Contents</div>
+<ul class="sectlevel1">
+<li><a href="#_lab_overview">1. Lab Overview</a>
+<ul class="sectlevel2">
+<li><a href="#_in_this_lab_you_will_learn_how_to">1.1. In this lab you will learn how to:</a></li>
+</ul>
+</li>
+<li><a href="#_prerequisites">2. Prerequisites:</a></li>
+<li><a href="#_deploying_jenkins">3. Deploying Jenkins</a>
+<ul class="sectlevel2">
+<li><a href="#_jenkins_introduction">3.1. Jenkins introduction</a></li>
+<li><a href="#_our_jenkins_demo">3.2. Our Jenkins demo</a></li>
+<li><a href="#_creating_a_jenkins_template_that_uses_openshift_container_storage_4">3.3. Creating a Jenkins template that uses OpenShift Container Storage 4</a></li>
+<li><a href="#_creating_our_project">3.4. Creating our project</a></li>
+<li><a href="#_running_the_build_and_looking_at_results">3.5. Running the build and looking at results</a></li>
+<li><a href="#_running_our_demo_in_a_multi_tenant_environment">3.6. Running our demo in a multi-tenant environment</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="sect1">
+<h2 id="_lab_overview"><a class="anchor" href="#_lab_overview"></a>1. Lab Overview</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Jenkins is one of the most important development infrastructure components, but can we make Jenkins pipelines run faster? Using OpenShift Container Storage we can speed up the build time of applications by using persistent storage to save stateful data of dependencies/libraries (for example) that are needed during compilation.</p>
+</div>
+<div class="sect2">
+<h3 id="_in_this_lab_you_will_learn_how_to"><a class="anchor" href="#_in_this_lab_you_will_learn_how_to"></a>1.1. In this lab you will learn how to:</h3>
+<div class="ulist">
+<ul>
+<li>
+<p>Create a Jenkins template that uses OpenShift Container Storage 4 persistent storage</p>
+</li>
+<li>
+<p>Implement a BuildConfig for the JAX-RS project</p>
+</li>
+<li>
+<p>Use Jenkins’s <strong>PodTemplate</strong> in the BuildConfig to create Jenkins (Maven) slave <strong>Pods</strong> that will use OpenShift Container Storage 4 persistent storage</p>
+</li>
+<li>
+<p>How to run a simple build and measure the performance</p>
+</li>
+<li>
+<p>How OpenShift Container Storage 4 help shorten the build time</p>
+</li>
+<li>
+<p>How to run the demo in a multi Jenkins environment simulating large engineering organization with many groups/projects using different Jenkins instances</p>
+</li>
+<li>
+<p>How to do all this from the command line :)</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_prerequisites"><a class="anchor" href="#_prerequisites"></a>2. Prerequisites:</h2>
+<div class="sectionbody">
+<div class="ulist">
+<ul>
+<li>
+<p>Make sure you have a running OCP cluster based on the RHPDS <code>OpenShift 4.2 Workshop</code></p>
+</li>
+<li>
+<p>a copy of this git repo</p>
+</li>
+<li>
+<p><strong>NOTE</strong>: The scripts in this lab will work on Linux (various distributions) and MacOS. They are not tested on any Windows OS.</p>
+</li>
+<li>
+<p>Please git clone our repository and once cloned, you&#8217;ll find all the scripts needed in the <code>ocs4jenkins</code> directory:</p>
+</li>
+</ul>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre>git clone https://github.com/red-hat-storage/ocs-training.git</pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_deploying_jenkins"><a class="anchor" href="#_deploying_jenkins"></a>3. Deploying Jenkins</h2>
+<div class="sectionbody">
+<div class="sect2">
+<h3 id="_jenkins_introduction"><a class="anchor" href="#_jenkins_introduction"></a>3.1. Jenkins introduction</h3>
+<div class="paragraph">
+<p>Jenkins is basically a free and open source automation server. The gist of Jenkins is very simple, it intends to help the software development process by doing things that normally a developer would do manually, and doing it in an automated way with minimal to none human interaction. In that sense it matches the concept of continuous delivery (CD) perfectly.<br>
+Jenkins is a server based system that runs as a servlet in a containerized environment. It can interact with all major version control tools and can automate builds using tools like Maven, Ant and SBT.<br>
+Because of this level of integration with version control software, builds can easily be triggered by an action such as a "commit" in git. Builds can also start via a daily/hourly cron job or even by simply requesting a build URL.<br></p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_our_jenkins_demo"><a class="anchor" href="#_our_jenkins_demo"></a>3.2. Our Jenkins demo</h3>
+<div class="paragraph">
+<p>In our demo/example, we are going to use a Jenkins pipeline to build the <code>openshift-tasks</code> project (<a href="https://github.com/redhat-gpte-devopsautomation/openshift-tasks" class="bare">https://github.com/redhat-gpte-devopsautomation/openshift-tasks</a>) to demonstrate how to implement a JAX-RS service. We are going to create an Openshift project that will hold a Jenkins <strong>Pod</strong> (that also uses OCS4 persistent storage) and then when we start our build, the Jenkins master <strong>Pod</strong> is going to create a Maven <strong>Pod</strong> to actually run the build. That Maven <strong>Pod</strong> will use OCP4 persistent storage.<br>
+The actual code we compile is not important for the demo, we are just utilizing the build stages to show how OCS4 can save build time significantly.
+The pipeline has well-defined stages:</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Create the Maven <strong>Pod</strong></p>
+</li>
+<li>
+<p>Clone the code</p>
+</li>
+<li>
+<p>Build the artifact (including getting all dependencies)</p>
+</li>
+<li>
+<p>End the build.</p>
+</li>
+</ol>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+Pipelines usually have more stages, at least one testing stage, we are skipping these stages
+</td>
+</tr>
+</table>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="_images/imgs/Jenkins_pipeline.png" alt="Showing Jenkins Pods">
+</div>
+<div class="title">Figure 1. Jenkins pipeline demo components</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_creating_a_jenkins_template_that_uses_openshift_container_storage_4"><a class="anchor" href="#_creating_a_jenkins_template_that_uses_openshift_container_storage_4"></a>3.3. Creating a Jenkins template that uses OpenShift Container Storage 4</h3>
+<div class="paragraph">
+<p>OCP4 comes preconfigured with two Jenkins templates to use:</p>
+</div>
+<div class="listingblock execute">
+<div class="content">
+<pre class="highlightjs highlight"><code>oc get templates -n openshift -o custom-columns=NAME:.metadata.name|grep -i jenkins</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="title">Example output:</div>
+<div class="content">
+<pre>jenkins-ephemeral
+jenkins-persistent</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>We are going to create a new template based on the jenkins-persistent template, to do so, we are going to run the <strong>create_ocs_jenkins_template</strong> script.<br>
+The script parameters (CSI_DRIVER, PV_SIZE and NEW_TEMPLATE_NAME) are self explanatory, you can edit the script and change them but remember that other scripts in this lab might use the default value of NEW_TEMPLATE_NAME. The script will perform the following tasks:</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Change the name of the template (so it can co-exists with the one we copied from).</p>
+</li>
+<li>
+<p>Add the storage class (sc) we want to use in the template (the jenkins-persistent template just uses the default storage class in OCP).</p>
+</li>
+<li>
+<p>Add/change the size of the PV we want for the Jenkins pod.</p>
+</li>
+<li>
+<p>Add some Jenkins Java pod creation parameters to speed up new containers creation.</p>
+</li>
+<li>
+<p>Run the "oc create" command and the create the new template</p>
+</li>
+</ol>
+</div>
+<div class="paragraph">
+<p>Run the create_ocs_jenkins_template script:</p>
+</div>
+<div class="listingblock execute">
+<div class="content">
+<pre class="highlightjs highlight"><code>$ bash create_ocs_jenkins_template</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>After running the script, you should see another jenkins template:</p>
+</div>
+<div class="listingblock execute">
+<div class="content">
+<pre class="highlightjs highlight"><code>oc get templates -n openshift -o custom-columns=NAME:.metadata.name|grep -i jenkins</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="title">Example output:</div>
+<div class="content">
+<pre>jenkins-ephemeral
+jenkins-persistent
+jenkins-persistent-ocs</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>The last jenkins template <strong>jenkins-persistent-ocs</strong> is the one that we are going to use.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_creating_our_project"><a class="anchor" href="#_creating_our_project"></a>3.4. Creating our project</h3>
+<div class="paragraph">
+<p>Now that we have a Jenkins OCS4 template, we can deploy Jenkins and use the <strong>deploy_jenkins</strong> bash script to:</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Create a project</p>
+</li>
+<li>
+<p>Create a PVC that will be used for all our builds</p>
+</li>
+<li>
+<p>Create a Jenkins server <strong>Pod</strong> (using the template from previous step)</p>
+</li>
+<li>
+<p>Create the Jenkins pipeline build configuration (as a BuildConfig) for our openshit-tasks project</p>
+</li>
+</ol>
+</div>
+<div class="paragraph">
+<p>Now that we have a template a Jenkins OCS4 template, we can deploy Jenkins and to so we&#8217;re going to use the <strong>deploy_jenkins</strong> bash script to:</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Create a project</p>
+</li>
+<li>
+<p>Create a PVC that will be used for all our builds</p>
+</li>
+<li>
+<p>Create a Jenkins server pod (using the template from previous step)</p>
+</li>
+<li>
+<p>Create the Jenkins pipeline build configuration (as a BuildConfig) for our openshit-tasks project.</p>
+</li>
+</ol>
+</div>
+<div class="paragraph">
+<p>The script accept two variables from the command line, the OCP project name you want to use and the persistent storage driver you want to use (in our case ocs-storagecluster-ceph-rbd).<br>
+The real "magic" takes place at the BuildConfig object, so before running the script lets take a look:</p>
+</div>
+<div class="listingblock yaml">
+<div class="content">
+<pre class="highlightjs highlight"><code>  1 kind: "BuildConfig"
+  2 apiVersion: "v1"
+  3 metadata:
+  4   name: "jax-rs-build"
+  5 spec:
+  6   strategy:
+  7     type: JenkinsPipeline
+  8     jenkinsPipelineStrategy:
+  9       jenkinsfile: |-
+ 10         *PodTemplate*(label: 'maven-s',
+ 11                     cloud: 'openshift',
+ 12                     inheritFrom: 'maven',
+ 13                     name: 'maven-s',
+ 14                     volumes: [persistentVolumeClaim(mountPath: '/home/jenkins/.m2', claimName: 'dependencies', readOnly: false) ]
+ 15               ) {
+ 16           node("maven-s") {
+ 17             stage('Source Checkout') {
+ 18               git url: "https://github.com/redhat-gpte-devopsautomation/openshift-tasks.git"
+ 19               script {
+ 20                 def pom = readMavenPom file: 'pom.xml'
+ 21                 def version = pom.version
+ 22               }
+ 23             }
+ 24             // Using Maven build the war file
+ 25             stage('Build JAX-RS') {
+ 26               echo "Building war file"
+ 27               sh "mvn clean package -DskipTests=true"
+ 28             }
+ 29           }
+ 30         }</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>So the pipeline is very simple, we create a Maven <strong>Pod</strong> (based on the OCP Maven default image, line #10), git clone our code (line #18), and then create the artifact using Maven (line #27).<br>
+The "<strong>PodTemplate</strong>" section is where we attached the PV that is created in the previous step in the script (the claim is called "dependencies").<br>
+The importance of keeping the same claim is simple, for each build, when we build the artifact, we need to download all the dependencies to compile the code.
+Since these dependencies don&#8217;t really change most of the time for the same code, we use OCS4 persistent storage to keep the data persistent for each build, thus making any Maven build that follows the first build, up to 90% faster.</p>
+</div>
+<div class="paragraph">
+<p>after explaining all this, lets run the script:</p>
+</div>
+<div class="listingblock execute">
+<div class="content">
+<pre class="highlightjs highlight"><code>bash deploy_jenkins myjenkins-1 ocs-storagecluster-ceph-rbd</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_running_the_build_and_looking_at_results"><a class="anchor" href="#_running_the_build_and_looking_at_results"></a>3.5. Running the build and looking at results</h3>
+<div class="paragraph">
+<p>The "oc" command to run a build is very simple and it is literally "oc start-build &lt;build_name&gt;", however we are going to use the bash script <strong>run_builds</strong> to not only run this command for you, but also run the build 5 times in a sequential manner, measure the duration of each run and output this data into a log file per run.
+The script accept two variables, the OCP project name where you created the Jenkins pod (and of course the BuildConfig and PV), and a directory to place the outputs.</p>
+</div>
+<div class="listingblock execute">
+<div class="content">
+<pre class="highlightjs highlight"><code>bash run_builds myjenkins-1 myjenkins-1</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>if we&#8217;ll look at the newly created "myjenkins-1" directory, it should have 10 files (2 files for each of the 5 runs of the build):<br>
+The files that matches &lt;project_name&gt;-&lt;BuildConfig_name&gt;-&lt;run_number&gt; are literally the output of the Jenkins build runs.<br>
+The files starting with "log-" will hold the build duration data.
+A quick grep sample of the results will show similar results to these:</p>
+</div>
+<div class="listingblock execute">
+<div class="content">
+<pre class="highlightjs highlight"><code>cat myjenkins-1/log-myjenkins-1-jax-rs-build-*|grep 'Total time'</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="title">Example output:</div>
+<div class="content">
+<pre>[INFO] Total time: 01:39 min
+[INFO] Total time: 5.337 s
+[INFO] Total time: 3.510 s
+[INFO] Total time: 3.258 s
+[INFO] Total time: 2.930 s</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>What we are "grepping" for is the total time it took for the actual maven <strong>Pod</strong> to run the build, or to be precise, the "mvn clean package -DskipTests=true" command, and as you can see, the first build took in this example, 99 seconds, while all the consecutive builds took less than 5 seconds. The reason was already explained before, the dependencies are downloaded for the first build and then reused again and again for any other build that follows.<br>
+It is important to note that this is a fairly small project/code that we&#8217;re using and bigger projects/code, will have even a bigger impact on the maven commands as the dependencies will most likely be much larger.<br>
+Also important to note, if we would have used ephermal storage for our maven <strong>Pods</strong>, each of the 5 builds would have take roughly 99 seconds. If we do a simple math, using ephermal storage would have taken us roughly 500 seconds to run 5 builds vs something like roughly 115 seconds if we are using OCP4 persistent storage for the maven pods!!!</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_running_our_demo_in_a_multi_tenant_environment"><a class="anchor" href="#_running_our_demo_in_a_multi_tenant_environment"></a>3.6. Running our demo in a multi-tenant environment</h3>
+<div class="paragraph">
+<p>In real-life scenarios of Jenkins in the Kubernetes/DevOps world, there is usually not just one Jenkins server running, but several.
+It could be that there&#8217;s a Jenkins server per development team, maybe a Jenkins server per engineering group (Dev, QE, Support, Professional services and so on).
+It could be that a developer is working on several project that requires different version of Jenkins or Jenkins plugins and end up having several Jenkins servers (master <strong>Pod</strong>) per code projects,
+so as you can see, the notion of having many Jenkins servers running on a single OpenShift cluster using some sort of software define storage is very real.</p>
+</div>
+<div class="paragraph">
+<p>+
+To simulate a multi Jenkins server environment, we are going to use the previous scripts (deploy_jenkins and run_builds) but we&#8217;re going to "wrap" these two scripts by scripts that will create a multi Jenkins server environment.
+The <strong>init_and_deploy_jenkins-parallel</strong> bash script variables are easy to understand. The script deploys NUMBER_OF_PROJECTS instances of Jenkins, with each project that holds a single Jenkins server named with the prefix of PROJECT_PREFIX. The script is doing the creation in batches of the DEPLOY_INCREMENT variable just to avoid any kind of resources issues during the <strong>Pod</strong> creation part.<br>
+To run the script:</p>
+</div>
+<div class="listingblock execute">
+<div class="content">
+<pre class="highlightjs highlight"><code>bash init_and_deploy_jenkins-parallel</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Once we have our Jenkins servers/<strong>Pods</strong> running, we can run our previous demo in parallel on all the Jenkins servers. For that we will use the <strong>run_builds-parallel</strong> script, which basically runs the <strong>run_builds</strong> script for the number of projects we created previously (remember, each OCP project hold a single Jenkins server). The variable NUMBER_OF_PROJECTS need to match the same number from the <strong>init_and_deploy_jenkins-parallel</strong> script.<br>
+The script also creates a separate directory per project to store the output from the runs.<br>
+The script accept one variable and that is a name for the run so all other project directories output will be created under this RUN_NAME directory.
+To run the script:</p>
+</div>
+<div class="listingblock execute">
+<div class="content">
+<pre class="highlightjs highlight"><code>bash run_builds-parallel running_60_jenkins</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Once all runs are done (should take roughly 10 minutes), you can simply run the <strong>calculate_results</strong> script to go through all directories and calculate all the averages per run.<br>
+This script have some variables that needs to match previous scripts, NUMBER_OF_PROJECTS, PROJECT_PREFIX, BUILD_CONFIG and NUMBER_OF_BUILDS must match the variables from all 4 previous scripts. The script also accept the RUN_NAME variable, the same one we used in the <strong>run_builds-parallel</strong> script.</p>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+Depending on where you are running the scripts (remotely from your laptop or a node/pod inside the lab) and how good did the Kubernetes scheduler "spread" the Jenkins and maven pods, the run of 60 Jenkins pods doing 5 builds in parallel can take between 10 to 20 minutes, so you might want to change the number of projects running in parallel to a smaller number if you don&#8217;t want to wait.<br>
+</td>
+</tr>
+</table>
+</div>
+<div class="listingblock bash">
+<div class="content">
+<pre class="highlightjs highlight"><code>bash calculate_results running_60_jenkins</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>The output should be similar to this in the sense that average of first build will be significantly higher than the rest (these numbers are in seconds):</p>
+</div>
+<div class="listingblock execute">
+<div class="content">
+<pre class="highlightjs highlight"><code>bash calculate_results testing_60</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="title">Example output:</div>
+<div class="content">
+<pre>Average for build 1: 91.2667
+Average for build 2: 8.248
+Average for build 3: 5.41643
+Average for build 4: 5.64875
+Average for build 5: 4.7366</pre>
+</div>
+</div>
+<div class="paragraph">
+<p><strong>For the curious mind:</strong> Check to see if the Kubernetes scheduler have done a good job at distributing the 60 Jenkins pods:</p>
+</div>
+<div class="listingblock bash">
+<div class="content">
+<pre class="highlightjs highlight"><code>$ oc get pods -o wide --all-namespaces|grep jenkins |grep -vi deploy|grep 1/1|awk '{print $8}'|sort|uniq -c</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+</article>
+<aside class="toc sidebar" data-title="Contents" data-levels="2">
+  <div class="toc-menu"></div>
+</aside>
+  </div>
+</main>
+</div>
+<footer class="footer">
+  <p>This page was built using the Antora default UI.</p>
+  <p>The source code for this UI is licensed under the terms of the MPL-2.0 license.</p>
+</footer>
+<script src="../../_/js/site.js"></script>
+<script async src="../../_/js/vendor/highlight.js"></script>
+  </body>
+</html>
